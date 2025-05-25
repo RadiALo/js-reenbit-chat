@@ -5,6 +5,10 @@ export class UserRepository {
     return await User.find();
   }
 
+  async findById(id: string) {
+    return await User.findOne({ _id: id });
+  }
+
   async findByEmail(email: string) {
     return await User.findOne({ email});
   }

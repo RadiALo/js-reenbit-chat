@@ -43,12 +43,35 @@ export class UserController {
         return;
       }
 
-      const { token, userId } = await this.userService.loginUser(email, password);
+      const { token, userId, expireDate } = await this.userService.loginUser(email, password);
       
-      res.status(200).json({ token, userId });
+      res.status(200).json({ token, userId, expireDate });
     } catch (error: Error | any) {
       res.status(500).json({ message: "Error logging in user", error });
       console.error("Error logging in user:", error);
+    }
+  }
+
+  async getCurrentUser(req: Request, res: Response) {
+    try {
+      const userId = req.token?.userId;
+
+      if (!userId) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
+
+      const user = await this.userService.getUserById(userId);
+
+      if (!user) {
+        res.status(404).json({ message: "User not found" });
+        return;
+      }
+
+      res.status(200).json(new UserResponseDto(user));
+    } catch (error: Error | any) {
+      res.status(500).json({ message: "Error fetching current user", error });
+      console.error("Error fetching current user:", error);
     }
   }
 }

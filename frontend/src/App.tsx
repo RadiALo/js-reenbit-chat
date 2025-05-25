@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import ChatMessage from "./components/ChatMessage";
 import ChatEntry from "./components/ChatEntry";
@@ -6,7 +6,14 @@ import Dialog from "./components/Dialog";
 import LoginForm from "./forms/LoginForm";
 
 const App: React.FC = () => {
+  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const [loginDialogOpen, setLoginDialogOpen] = React.useState(false);
+
+  const [name, setName] = useState<string>('');
+
+  useEffect(() => {
+
+  }, [token]);
 
   return (
     <div>
@@ -16,12 +23,27 @@ const App: React.FC = () => {
             <img className="user-icon" src="/user-icon.png" alt="User icon" />
             <div className="profile--name">Danylo Kozakov</div>
 
-            <button
-              className="button"
-              onClick={() => {
-                setLoginDialogOpen(true);
-              }}
-            >Log In</button>
+            {
+              token ? (
+                <button
+                  className="button"
+                  onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('expireDate');
+                    localStorage.removeItem('userId');
+                    setToken(null);
+                  }}
+                >Log Out</button> 
+              ) : (
+                <button
+                  className="button"
+                  onClick={() => {
+                    setLoginDialogOpen(true);
+                  }}
+                >Log In</button> 
+              )
+            }
+            
           </div>
 
           <div className="profile--search">
@@ -95,7 +117,10 @@ const App: React.FC = () => {
 
       <div>
         <Dialog title="Log In" isOpen={loginDialogOpen} onClose={() => {setLoginDialogOpen(false);}}>
-          <LoginForm />
+          <LoginForm onLoginSuccess={(token) => {
+            setLoginDialogOpen(false);
+            setToken(token);
+          }}/>
         </Dialog>
       </div>
     </div>

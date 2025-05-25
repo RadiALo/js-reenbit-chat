@@ -1,3 +1,4 @@
+import { on } from "events";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -7,13 +8,16 @@ type FormData = {
   password: string;
 };
 
-const RegisterForm: React.FC = () => {
+type LoginFormProps = {
+  onLoginSuccess?: (token: string) => void;
+  onLoginError?: (error: string) => void;
+}
+
+const RegisterForm: React.FC<LoginFormProps> = ({ onLoginSuccess, onLoginError }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    console.log("Form Data Submitted:", data);
-
     const response = await fetch(`${apiUrl}/users/login`, {
       method: 'POST',
       headers: {
@@ -22,7 +26,18 @@ const RegisterForm: React.FC = () => {
       body: JSON.stringify(data),
     });
 
-    console.log("Response:", response);
+    if (!response.ok) {
+      const errorData = await response.json();
+      alert(`Login failed: ${errorData.message}`);
+      onLoginError?.(errorData.message);
+      return;
+    }
+
+    const jsonData = await response.json();
+    localStorage.setItem('token', jsonData.token);
+    localStorage.setItem('userId', jsonData.userId);
+    localStorage.setItem('expireDate', jsonData.expireDate);
+    onLoginSuccess?.(jsonData.token);
   };
 
   return (
