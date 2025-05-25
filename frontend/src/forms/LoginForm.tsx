@@ -54,7 +54,7 @@ const RegisterForm: React.FC = () => {
         {errors.password && <p>{errors.password.message}</p>}
       </div>
       
-      <button type="submit">Login</button>
+      <button className="button" type="submit">Login</button>
     </form>
   )
 };
