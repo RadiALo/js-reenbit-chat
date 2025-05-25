@@ -4,7 +4,6 @@ import ChatMessage from "./components/ChatMessage";
 import Dialog from "./components/Dialog";
 import LoginForm from "./forms/LoginForm";
 import ChatsList from "./components/ChatsList";
-import { set } from "react-hook-form";
 
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
