@@ -31,7 +31,6 @@ app.use(cors({
   origin: frontendUrl
 }));
 
-app.use(authMiddleware);
 app.use(express.json());
 app.use('/api/users', userRouter.router);
 
