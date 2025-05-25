@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
+import { RequestUserRegisterDto } from "../dtos/UserRequestDto";
+import { UserResponseDto } from "../dtos/UserResponseDto";
+import { validateOrReject } from "class-validator";
 
 export class UserController {
   private userService = new UserService();
@@ -17,15 +20,14 @@ export class UserController {
 
   async registerUser(req: Request, res: Response) {
     try {
-      const { email, password, name } = req.body;
+      const userDto = new RequestUserRegisterDto(req.body);
+      await validateOrReject(userDto)
+        .catch(_ => {
+          res.status(400).json({ message: "Email, password, and name are required" });
+      });
 
-      if (!email || !password || !name) {
-        res.status(400).json({ message: "Email, password, and name are required" });
-        return;
-      }
-
-      const user = await this.userService.registerUser(email, password, name);
-      res.status(201).json(user);
+      const user = await this.userService.registerUser(userDto.email, userDto.password, userDto.name);
+      res.status(201).json(new UserResponseDto(user));
     } catch (error: Error | any) {
       res.status(500).json({ message: "Error registering user", error });
       console.error("Error registering user:", error);
