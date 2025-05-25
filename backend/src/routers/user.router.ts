@@ -12,6 +12,7 @@ export class UserRouter {
 
   private initializeRoutes() {
     this.router.get('/', this.controller.getUsers.bind(this.controller));
-    this.router.post('/', this.controller.registerUser.bind(this.controller));
+    this.router.post('/register', this.controller.registerUser.bind(this.controller));
+    this.router.post('/login', this.controller.loginUser.bind(this.controller));
   }
 }

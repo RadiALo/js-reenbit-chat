@@ -17,11 +17,36 @@ export class UserController {
 
   async registerUser(req: Request, res: Response) {
     try {
-      const user = await this.userService.registerUser(req.body);
+      const { email, password, name } = req.body;
+
+      if (!email || !password || !name) {
+        res.status(400).json({ message: "Email, password, and name are required" });
+        return;
+      }
+
+      const user = await this.userService.registerUser(email, password, name);
       res.status(201).json(user);
     } catch (error: Error | any) {
-      res.status(400).json({ message: "Error registering user", error });
+      res.status(500).json({ message: "Error registering user", error });
       console.error("Error registering user:", error);
+    }
+  }
+
+  async loginUser(req: Request, res: Response) {
+    try {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        res.status(400).json({ message: "Email and password are required" });
+        return;
+      }
+
+      const { token, userId } = await this.userService.loginUser(email, password);
+      
+      res.status(200).json({ token, userId });
+    } catch (error: Error | any) {
+      res.status(500).json({ message: "Error logging in user", error });
+      console.error("Error logging in user:", error);
     }
   }
 }
