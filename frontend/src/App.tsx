@@ -6,8 +6,9 @@ const App: React.FC = () => {
     <div className='main-grid'>
       <div className='profile'>
         <div className='profile--header'>
-            <img className='profile--header--icon' src="/user-icon.png" alt="User icon" />
-            
+            <img className='user-icon' src="/user-icon.png" alt="User icon" />
+            <div className='profile--name'>Danylo Kozakov</div>
+
             <button className='button'>Log In</button>
           </div>
 
@@ -18,14 +19,104 @@ const App: React.FC = () => {
 
       <div className='chats'>
         <h2 className='chats--h'>Chats</h2>
+
+        <div className='chats--list'>
+          <div className='chats--item'>
+            <img className='user-icon' src="/user-icon.png" alt="User icon" />
+            <div className='chats--item--text'>
+              <p className='chats--item--text--name'>Alice Freeman</p>
+              <p className='chats--item--text--message'>How was your meeting?</p>
+            </div>
+            <div className='chats--item--date'>
+              Aug 17, 2022
+            </div>
+          </div>
+
+          <div className='chats--item'>
+            <img className='user-icon' src="/user-icon.png" alt="User icon" />
+            <div className='chats--item--text'>
+              <p className='chats--item--text--name'>Josefina</p>
+              <p className='chats--item--text--message'>Hi! No, I am going for a walk.</p>
+            </div>
+            <div className='chats--item--date'>
+              Aug 16, 2022
+            </div>
+          </div>
+
+          <div className='chats--item'>
+            <img className='user-icon' src="/user-icon.png" alt="User icon" />
+            <div className='chats--item--text'>
+              <p className='chats--item--text--name'>Velazquez</p>
+              <p className='chats--item--text--message'>Hi! I am a little sad, tell me a joke please.</p>
+            </div>
+            <div className='chats--item--date'>
+              Aug 17, 2022
+            </div>
+          </div>
+
+          <div className='chats--item'>
+            <img className='user-icon' src="/user-icon.png" alt="User icon" />
+            <div className='chats--item--text'>
+              <p className='chats--item--text--name'>Piter</p>
+              <p className='chats--item--text--message'></p>
+            </div>
+            <div className='chats--item--date'>
+              Aug 17, 2022
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className='chat-header'>
+        <img className='user-icon' src="/user-icon.png" alt="User icon" />
 
+        <div className='chat-header--name'>Alice Freeman</div>
       </div>
 
       <div className='chat-messages'>
+        <div className='chat-messages--list'>
+          <div className='chat-messages--item sender-item'>
+            <img className='user-icon' src="/user-icon.png" alt="User icon" />
 
+            <div>
+              <div className='chat-messages--item--message sender-message'>
+                How was your meeting?
+              </div>
+
+              <div className='chat-messages--item--date sender-date'>
+                8/17/2022, 7:43 AM
+              </div>
+            </div>
+          </div>
+
+          <div className='chat-messages--item'>
+            <div>
+              <div className='chat-messages--item--message'>
+                Not bad. What about you?
+              </div>
+
+              <div className='chat-messages--item--date'>
+                8/17/2022, 7:45 AM
+              </div>
+            </div>
+          </div>
+          
+          <div className='chat-messages--item'>
+            <div>
+              <div className='chat-messages--item--message'>
+                How was your meeting?
+              </div>
+
+              <div className='chat-messages--item--date'>
+                8/17/2022, 7:46 AM
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className='chat-messages--bar'>
+          <textarea className='chat-messages--bar--input' rows={1} placeholder='Type your message' />
+        </div>
       </div>
     </div>
   );
