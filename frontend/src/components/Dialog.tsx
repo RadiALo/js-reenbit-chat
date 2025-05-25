@@ -14,11 +14,14 @@ const Dialog: React.FC<DialogProps> = ({ title, children, isOpen, onClose }) => 
 
   return (
     <div className={`dialog--background ${!isOpen ? "dialog-hidden" : ""}`} onClick={onClose}>
-      <div className="dialog--window">
+      <div
+        className="dialog--window"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="dialog--header">
           <h2 className="dialog--title">{title}</h2>
 
-          <button onClick={onClose}>X</button>
+          <button className="button" onClick={onClose}>X</button>
         </div>
         { children }
       </div>
