@@ -2,8 +2,12 @@ import React from "react";
 import "./App.css";
 import ChatMessage from "./components/ChatMessage";
 import ChatEntry from "./components/ChatEntry";
+import Dialog from "./components/Dialog";
+import LoginForm from "./forms/LoginForm";
 
 const App: React.FC = () => {
+  const [loginDialogOpen, setLoginDialogOpen] = React.useState(false);
+
   return (
     <div>
       <div className="main-grid">
@@ -12,7 +16,12 @@ const App: React.FC = () => {
             <img className="user-icon" src="/user-icon.png" alt="User icon" />
             <div className="profile--name">Danylo Kozakov</div>
 
-            <button className="button">Log In</button>
+            <button
+              className="button"
+              onClick={() => {
+                setLoginDialogOpen(true);
+              }}
+            >Log In</button>
           </div>
 
           <div className="profile--search">
@@ -82,6 +91,12 @@ const App: React.FC = () => {
             />
           </div>
         </div>
+      </div>
+
+      <div>
+        <Dialog title="Log In" isOpen={loginDialogOpen} onClose={() => {setLoginDialogOpen(false);}}>
+          <LoginForm />
+        </Dialog>
       </div>
     </div>
   );

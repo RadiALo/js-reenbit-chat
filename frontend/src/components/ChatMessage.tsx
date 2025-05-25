@@ -18,7 +18,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ text, date, isUserMessage = t
   });
 
   return (
-    <div className={`chat-messages--item ${isUserMessage ? "" : "sender-item"}`}>
+    <div className={`chat-messages--item ${!isUserMessage ? "" : "sender-item"}`}>
       {!isUserMessage && (
         <img className='user-icon' src={senderIconUri} alt="Sender icon" />
       )}
@@ -28,7 +28,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ text, date, isUserMessage = t
           {text}
         </div>
 
-        <div className={`chat-messages--item--date ${isUserMessage ? "" : "sender-date"}`}>{formattedDate}</div>
+        <div className={`chat-messages--item--date ${!isUserMessage ? "sender-date" : ""}`}>{formattedDate}</div>
       </div>
     </div>
   );
