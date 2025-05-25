@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import ChatMessage from './components/ChatMessage';
+import ChatEntry from './components/ChatEntry';
 
 const App: React.FC = () => {
   return (
@@ -22,49 +23,10 @@ const App: React.FC = () => {
         <h2 className='chats--h'>Chats</h2>
 
         <div className='chats--list'>
-          <div className='chats--item'>
-            <img className='user-icon' src="/user-icon.png" alt="User icon" />
-            <div className='chats--item--text'>
-              <p className='chats--item--text--name'>Alice Freeman</p>
-              <p className='chats--item--text--message'>How was your meeting?</p>
-            </div>
-            <div className='chats--item--date'>
-              Aug 17, 2022
-            </div>
-          </div>
-
-          <div className='chats--item'>
-            <img className='user-icon' src="/user-icon.png" alt="User icon" />
-            <div className='chats--item--text'>
-              <p className='chats--item--text--name'>Josefina</p>
-              <p className='chats--item--text--message'>Hi! No, I am going for a walk.</p>
-            </div>
-            <div className='chats--item--date'>
-              Aug 16, 2022
-            </div>
-          </div>
-
-          <div className='chats--item'>
-            <img className='user-icon' src="/user-icon.png" alt="User icon" />
-            <div className='chats--item--text'>
-              <p className='chats--item--text--name'>Velazquez</p>
-              <p className='chats--item--text--message'>Hi! I am a little sad, tell me a joke please.</p>
-            </div>
-            <div className='chats--item--date'>
-              Aug 17, 2022
-            </div>
-          </div>
-
-          <div className='chats--item'>
-            <img className='user-icon' src="/user-icon.png" alt="User icon" />
-            <div className='chats--item--text'>
-              <p className='chats--item--text--name'>Piter</p>
-              <p className='chats--item--text--message'></p>
-            </div>
-            <div className='chats--item--date'>
-              Aug 17, 2022
-            </div>
-          </div>
+          <ChatEntry name='Alice Freemab' message='How was your meeting?' date='Aug 17, 2012' />
+          <ChatEntry name='Alice Freemab' message='How was your meeting?' date='Aug 17, 2012' />
+          <ChatEntry name='Alice Freemab' message='How was your meeting?' date='Aug 17, 2012' />
+          <ChatEntry name='Alice Freemab' message='How was your meeting?' date='Aug 17, 2012' />
         </div>
       </div>
 

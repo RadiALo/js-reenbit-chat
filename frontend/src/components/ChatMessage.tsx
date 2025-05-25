@@ -1,11 +1,13 @@
 import React from "react";
 
-const ChatMessage: React.FC<{
+type ChatMessageProps = {
   text: string;
   isUserMessage?: boolean;
   senderIconUri?: string;
   date: Date | string;
-}> = ({ text, date, isUserMessage = true, senderIconUri="/user-icon.png" }) => {
+};
+
+const ChatMessage: React.FC<ChatMessageProps> = ({ text, date, isUserMessage = true, senderIconUri="/user-icon.png" }) => {
   const formattedDate = typeof date === "string" ? date : date.toLocaleString("en-US", {
     month: "numeric",
     day: "numeric",
