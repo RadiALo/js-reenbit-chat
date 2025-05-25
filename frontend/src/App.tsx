@@ -1,19 +1,33 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter , Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Register from './pages/Register';
-import Login from './pages/Login';
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/register'  element={<Register />} />
-        <Route path='/login' element={<Login />} />
-      </Routes>
-    </BrowserRouter>
+    <div className='main-grid'>
+      <div className='profile'>
+        <div className='profile--header'>
+            <img className='profile--header--icon' src="/user-icon.png" alt="User icon" />
+            
+            <button className='button'>Log In</button>
+          </div>
+
+        <div className='profile--search'>
+          <input className='profile--search--input' type="text" placeholder='Search or start new chat' />
+        </div>
+      </div>
+
+      <div className='chats'>
+        <h2 className='chats--h'>Chats</h2>
+      </div>
+
+      <div className='chat-header'>
+
+      </div>
+
+      <div className='chat-messages'>
+
+      </div>
+    </div>
   );
 }
 
