@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import ChatMessage from './components/ChatMessage';
 
 const App: React.FC = () => {
   return (
@@ -75,43 +76,9 @@ const App: React.FC = () => {
 
       <div className='chat-messages'>
         <div className='chat-messages--list'>
-          <div className='chat-messages--item sender-item'>
-            <img className='user-icon' src="/user-icon.png" alt="User icon" />
-
-            <div>
-              <div className='chat-messages--item--message sender-message'>
-                How was your meeting?
-              </div>
-
-              <div className='chat-messages--item--date sender-date'>
-                8/17/2022, 7:43 AM
-              </div>
-            </div>
-          </div>
-
-          <div className='chat-messages--item'>
-            <div>
-              <div className='chat-messages--item--message'>
-                Not bad. What about you?
-              </div>
-
-              <div className='chat-messages--item--date'>
-                8/17/2022, 7:45 AM
-              </div>
-            </div>
-          </div>
-          
-          <div className='chat-messages--item'>
-            <div>
-              <div className='chat-messages--item--message'>
-                How was your meeting?
-              </div>
-
-              <div className='chat-messages--item--date'>
-                8/17/2022, 7:46 AM
-              </div>
-            </div>
-          </div>
+          <ChatMessage text='How was your meeting?' date='8/17/2022, 7:43 AM' isUserMessage={false}/>
+          <ChatMessage text='Not bad. What about you?' date='8/17/2022, 7:45 AM'/>
+          <ChatMessage text='How was your meeting?' date='8/17/2022, 7:46 AM'/>
         </div>
 
         <div className='chat-messages--bar'>
