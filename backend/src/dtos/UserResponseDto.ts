@@ -2,6 +2,7 @@ export class UserResponseDto {
   id: string;
   email: string;
   name: string;
+  token?: string;
   createdAt: Date;
 
   constructor(data: any) {
@@ -9,5 +10,6 @@ export class UserResponseDto {
     this.email = data.email;
     this.name = data.name;
     this.createdAt = data.createdAt;
+    this.token = data?.token;
   }
 }

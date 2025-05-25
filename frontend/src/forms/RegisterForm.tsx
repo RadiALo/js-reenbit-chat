@@ -7,7 +7,12 @@ type FormData = {
   password: string;
 };
 
-const RegisterForm: React.FC = () => {
+type RegisterFormProps = {
+  onRegisterSuccess?: (token: string) => void;
+  onRegisterError?: (error: string) => void;
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, onRegisterError }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
@@ -22,7 +27,18 @@ const RegisterForm: React.FC = () => {
       body: JSON.stringify(data),
     });
 
-    console.log("Response:", response);
+    if (!response.ok) {
+      const errorData = await response.json();
+      alert(`Login failed: ${errorData.message}`);
+      onRegisterError?.(errorData.message);
+      return;
+    }
+
+    const jsonData = await response.json();
+    localStorage.setItem('token', jsonData.token.token);
+    localStorage.setItem('userId', jsonData.token.userId);
+    localStorage.setItem('expireDate', jsonData.token.expireDate);
+    onRegisterSuccess?.(jsonData.token);
   };
 
   return (

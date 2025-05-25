@@ -167,7 +167,12 @@ const App: React.FC = () => {
           setRegisterDialogOpen(false);
         }}
       >
-        <RegisterForm />
+        <RegisterForm
+          onRegisterSuccess={(token) => {
+            setRegisterDialogOpen(false);
+            setToken(token);
+          }}
+        />
 
         <div>
           Have an account?{" "}

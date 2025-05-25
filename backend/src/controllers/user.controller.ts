@@ -27,7 +27,8 @@ export class UserController {
       });
 
       const user = await this.userService.registerUser(userDto.email, userDto.password, userDto.name);
-      res.status(201).json(new UserResponseDto(user));
+      const token = await this.userService.loginUser(userDto.email, userDto.password);
+      res.status(201).json({user: new UserResponseDto(user), token});
     } catch (error: Error | any) {
       res.status(500).json({ message: "Error registering user", error });
       console.error("Error registering user:", error);
