@@ -66,7 +66,7 @@ const RegisterForm: React.FC = () => {
         {errors.name && <p>{errors.name.message}</p>}
       </div>
       
-      <button type="submit">Register</button>
+      <button className="button" type="submit">Register</button>
     </form>
   )
 };
