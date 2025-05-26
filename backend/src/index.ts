@@ -3,7 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { UserRouter } from './routers/user.router';
-import authMiddleware from './middleware/authMiddleware';
+import { ResponderRouter } from './routers/responder.router';
 
 dotenv.config();
 
@@ -26,6 +26,7 @@ declare global {
 const app = express();
 
 const userRouter = new UserRouter();
+const responderRouter = new ResponderRouter();
 
 app.use(cors({
   origin: frontendUrl
@@ -33,6 +34,7 @@ app.use(cors({
 
 app.use(express.json());
 app.use('/api/users', userRouter.router);
+app.use('/api/responders', responderRouter.router);
 
 
 mongoose.connect(mongoUri)
