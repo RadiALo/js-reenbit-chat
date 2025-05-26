@@ -93,7 +93,15 @@ const App: React.FC = () => {
           ) : (
             <div className="chats--not-logged-in">
               <h2>Welcome to Chat App</h2>
-              <p>Please log in to start conversation!</p>
+              <p>Please <button
+              className="link"
+              onClick={() => {
+                setRegisterDialogOpen(false);
+                setLoginDialogOpen(true);
+              }}
+            >
+              log in
+            </button> to start conversation!</p>
             </div>
           )}
         </div>
