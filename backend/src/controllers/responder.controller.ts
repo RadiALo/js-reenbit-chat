@@ -1,5 +1,6 @@
 import { ResponderService } from "../services/responder.service";
-
+import { ResponderResponseDto } from "../dtos/ResponderResponseDto";
+import { ResponderFetchDto } from "../dtos/ResponderFetchDto";
 
 export class ResponderController {
   private responderService = new ResponderService();
@@ -7,8 +8,9 @@ export class ResponderController {
   async getResponders(_: any, res: any) {
     try {
       const responders = await this.responderService.getResponders();
+      const respondersDtos = responders.map(responder => new ResponderResponseDto(responder));
 
-      res.status(200).json(responders);
+      res.status(200).json(respondersDtos);
     } catch (error: Error | any) {
       res.status(500).json({ message: "Error fetching responders", error });
       console.error("Error fetching responders:", error);
@@ -24,7 +26,7 @@ export class ResponderController {
         return res.status(404).json({ message: "Responder not found" });
       }
 
-      res.status(200).json(responder);
+      res.status(200).json(new ResponderResponseDto(responder));
     } catch (error: Error | any) {
       res.status(500).json({ message: "Error fetching responder", error });
       console.error("Error fetching responder:", error);
@@ -58,7 +60,9 @@ export class ResponderController {
       }))
 
       const storedResponders = await this.responderService.getResponders();
-      const storedApiIds = storedResponders.map((responder: any) => responder.apiId);
+      const storedResponderDtos = storedResponders.map((responder: any) => new ResponderFetchDto(responder));
+
+      const storedApiIds = storedResponderDtos.map((responder: any) => responder.apiId);
 
       const newResponders = responders.filter((responder: any) => !storedApiIds.includes(responder.apiId));
 
