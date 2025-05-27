@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { ResponderService } from "./responder.service";
+import { ChatService } from "./chat.service";
 import { UserRepository } from "../repositories/user.repository";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
@@ -7,6 +9,8 @@ const JWT_EXPIRATION = "14d";
 const JWT_EXPIRATION_MS = 14 * 24 * 60 * 60 * 1000;
 
 export class UserService {
+  private responderService = new ResponderService();
+  private chatService = new ChatService(); 
   private userRepository = new UserRepository();
 
   async getUsers() {
@@ -32,7 +36,20 @@ export class UserService {
       password: hashedPassword
     };
 
-    return await this.userRepository.create(userData);
+    const user = await this.userRepository.create(userData);
+
+    const responders = await this.responderService.getResponders();
+    const shuffledResponders = responders.sort(() => Math.random() - 0.5);
+    const chosenResponders = shuffledResponders.slice(0, 3);
+
+    for (const responder of chosenResponders) {
+      await this.chatService.createChat({
+        ownerId: user._id,
+        responderId: responder._id
+      });
+    }
+
+    return user;
   }
 
   async loginUser(email: string, password: string) {
