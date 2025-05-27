@@ -2,12 +2,14 @@ import React from "react";
 import ChatMessage from "./ChatMessage";
 import { ChatDto } from "../types/ChatDto";
 import SendMessageBar from "./SendMessageBar";
+import { MessageDto } from "../types/MessageDto";
 
 type ChatProps = {
   chat: ChatDto | null;
+  onSendMessage?: (message: MessageDto) => void;
 };
 
-const Chat: React.FC<ChatProps> = ({ chat }) => {
+const Chat: React.FC<ChatProps> = ({ chat, onSendMessage }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
 
@@ -32,7 +34,8 @@ const Chat: React.FC<ChatProps> = ({ chat }) => {
         throw new Error("Failed to send message");
       }
 
-      const newMessage = await response.json();
+      const newMessage: MessageDto = await response.json();
+      onSendMessage?.(newMessage);
     }
 
     if (!chat) return;

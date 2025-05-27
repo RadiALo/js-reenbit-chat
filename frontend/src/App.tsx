@@ -7,6 +7,8 @@ import RegisterForm from "./forms/RegisterForm";
 import ChatsList from "./components/ChatsList";
 import Chat from "./components/Chat";
 import { ChatDto } from "./types/ChatDto";
+import { MessageDto } from "./types/MessageDto";
+
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -80,6 +82,17 @@ const App: React.FC = () => {
     }
   }, [id, token, apiUrl]);
 
+  const appendMessage = (message: MessageDto, isUserMessage: boolean = true) => {
+    setOpenedChat(prevChat => {
+      if (!prevChat) return prevChat;
+
+      return {
+        ...prevChat,
+        messages: [...(prevChat.messages || []), message]
+      };
+    });
+  };
+
   return (
     <>
       <div className="main-grid">
@@ -140,7 +153,7 @@ const App: React.FC = () => {
           )}
         </div>
 
-        { <Chat chat={openedChat}/> }
+        { <Chat chat={openedChat} onSendMessage={appendMessage}/> }
       </div>
 
       <Dialog

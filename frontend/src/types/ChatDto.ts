@@ -1,3 +1,5 @@
+import { MessageDto } from "./MessageDto";
+
 export type ChatDto = {
   id: string;
 
@@ -11,17 +13,7 @@ export type ChatDto = {
     name: string;
   }
 
-  lastMessage?: {
-    _id: string;
-    text: string;
-    createdAt: string;
-    senderModel: "User" | "Responder";
-  };
+  lastMessage?: MessageDto;
 
-  messages: {
-    _id: string;
-    text: string;
-    createdAt: string;
-    senderModel: "User" | "Responder";
-  }[]
+  messages: MessageDto[]
 }
