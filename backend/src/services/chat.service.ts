@@ -12,6 +12,10 @@ export class ChatService {
   }
 
   async createChat(data: any) {
-    return await this.chatRepository.create(data);
+
+    return await this.chatRepository.create({
+      owner: data.ownerId,
+      responder: data.responderId
+    });
   }
 }

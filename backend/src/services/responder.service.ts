@@ -1,4 +1,4 @@
-import { ResponderRepository } from "../repositories/responder.model";
+import { ResponderRepository } from "../repositories/responder.repository";
 
 export class ResponderService {
   private responderRepository = new ResponderRepository();

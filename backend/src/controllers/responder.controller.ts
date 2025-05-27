@@ -35,41 +35,41 @@ export class ResponderController {
 
   async fetchResponders() {
     try {
-      const response = await fetch("https://api.quotable.io/authors");
+      const initialResponse = await fetch("https://api.quotable.io/authors");
 
-      if (!response.ok) {
+      if (!initialResponse.ok) {
         throw new Error("Failed to fetch responders from external API");
       }
 
-      const data = await response.json();
+      const initialData = await initialResponse.json();
+      let allResults = [...initialData.results];
+      const totalPages = initialData.totalPages;
 
-      for (let i = 1; i < data.totalPages; i++) {
-        const pageResponse = await fetch(`https://api.quotable.io/authors?page=${i + 1}`);
-
+      for (let i = 1; i <= totalPages; i++) {
+        const pageResponse = await fetch(`https://api.quotable.io/authors?page=${i}`);
         if (!pageResponse.ok) {
-          throw new Error(`Failed to fetch page ${i + 1} from external API`);
+          throw new Error(`Failed to fetch page ${i} from external API`);
         }
 
         const pageData = await pageResponse.json();
-        data.results.push(...pageData.results);
+        allResults.push(...pageData.results);
       }
 
-      const responders = data.results.map((responder: any) => ({
-        name: responder.name,
-        apiId: responder._id,
-      }))
+      const responders = allResults.map((responder: any) => new ResponderFetchDto(responder));
 
       const storedResponders = await this.responderService.getResponders();
-      const storedResponderDtos = storedResponders.map((responder: any) => new ResponderFetchDto(responder));
+      const storedApiIds: string[] = storedResponders.map((r: any) => r.apiId);
 
-      const storedApiIds = storedResponderDtos.map((responder: any) => responder.apiId);
-
-      const newResponders = responders.filter((responder: any) => !storedApiIds.includes(responder.apiId));
+      const newResponders = responders.filter(
+        (responder) => responder.quoteCount > 0 && responder.apiId && !storedApiIds.includes(responder.apiId)
+      );
 
       if (newResponders.length > 0) {
-        await Promise.all(newResponders.map((responder: any) => 
-          this.responderService.createResponder(responder.apiId, responder.name)
-        ));
+        await Promise.all(
+          newResponders.map((responder) =>
+            this.responderService.createResponder(responder.apiId, responder.name)
+          )
+        );
       }
     } catch (error: Error | any) {
       console.error("Error fetching responders:", error);

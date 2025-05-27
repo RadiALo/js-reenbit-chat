@@ -1,6 +1,7 @@
 import { ChatService } from "../services/chat.service";
 import { ChatResponseDto } from "../dtos/response/chat.response.dto";
 import { ChatRequestDto } from "../dtos/request/chat.request.dto";
+import { IChat } from "../models/chat.model";
 
 export class ChatController {
   private chatService = new ChatService();
@@ -41,8 +42,8 @@ export class ChatController {
 
   async createChat(req: any, res: any) {
     try {
-      const chatData = new ChatRequestDto(req.body);
-      const newChat = await this.chatService.createChat(chatData);
+      const chatDto = new ChatRequestDto(req.body);
+      const newChat = await this.chatService.createChat(chatDto);
 
       res.status(201).json(newChat);
     } catch (error: Error | any) {
