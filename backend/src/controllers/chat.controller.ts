@@ -1,4 +1,6 @@
 import { ChatService } from "../services/chat.service";
+import { ChatResponseDto } from "../dtos/response/chat.response.dto";
+import { ChatRequestDto } from "../dtos/request/chat.request.dto";
 
 export class ChatController {
   private chatService = new ChatService();
@@ -12,7 +14,9 @@ export class ChatController {
         return res.status(404).json({ message: "No chats found for this user" });
       }
 
-      res.status(200).json(chats);
+      const chatDtos = chats.map((chat: any) => new ChatResponseDto(chat));
+
+      res.status(200).json(chatDtos);
     } catch (error: Error | any) {
       res.status(500).json({ message: "Error fetching chats", error });
       console.error("Error fetching chats:", error);
@@ -28,7 +32,7 @@ export class ChatController {
         return res.status(404).json({ message: "Chat not found" });
       }
 
-      res.status(200).json(chat);
+      res.status(200).json(new ChatResponseDto(chat));
     } catch (error: Error | any) {
       res.status(500).json({ message: "Error fetching chat", error });
       console.error("Error fetching chat:", error);
@@ -37,7 +41,7 @@ export class ChatController {
 
   async createChat(req: any, res: any) {
     try {
-      const chatData = req.body;
+      const chatData = new ChatRequestDto(req.body);
       const newChat = await this.chatService.createChat(chatData);
 
       res.status(201).json(newChat);

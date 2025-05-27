@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
-import { UserLoginRequestDto, UserRegistrationRequestDto } from "../dtos/UserRequestDto";
-import { UserResponseDto } from "../dtos/UserResponseDto";
+import { UserLoginRequestDto, UserRegistrationRequestDto } from "../dtos/request/user.request.dto";
+import { UserResponseDto } from "../dtos/response/user.response.dto";
 import { validateOrReject } from "class-validator";
 
 export class UserController {

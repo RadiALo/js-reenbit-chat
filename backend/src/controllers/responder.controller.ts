@@ -1,6 +1,6 @@
 import { ResponderService } from "../services/responder.service";
-import { ResponderResponseDto } from "../dtos/ResponderResponseDto";
-import { ResponderFetchDto } from "../dtos/ResponderFetchDto";
+import { ResponderResponseDto } from "../dtos/response/responder.response.dto";
+import { ResponderFetchDto } from "../dtos/fetch/responder.fetch.dto";
 
 export class ResponderController {
   private responderService = new ResponderService();
