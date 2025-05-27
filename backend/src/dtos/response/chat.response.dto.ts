@@ -1,14 +1,14 @@
 export class ChatResponseDto {
   id: string;
-  ownerId: string;
-  responderId: string;
+  owner: string;
+  responder: string;
   lastMessage: string;
   messages: string[];
 
   constructor(data: any) {
     this.id = data._id;
-    this.ownerId = data.owner;
-    this.responderId = data.responder;
+    this.owner = data.owner;
+    this.responder = data.responder;
     this.lastMessage = data.lastMessage;
     this.messages = data.messages;
   }

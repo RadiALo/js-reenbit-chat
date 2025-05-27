@@ -1,8 +1,8 @@
 import { Chat } from '../models/chat.model';
 
 export class ChatRepository {
-  async findAllByUserId(userId: string) {
-    return await Chat.find({ owner: userId })
+  async findAllByOwnerId(ownerId: string) {
+    return await Chat.find({ owner: ownerId })
       .populate('responder')
       .populate('owner')
       .populate('lastMessage');
@@ -15,6 +15,10 @@ export class ChatRepository {
       .populate('messages');
     return chat;
   };
+
+  async update(id: string, data: any) {
+    return await Chat.findByIdAndUpdate(id, data);
+  }
 
   async create(data: any) {
     return await Chat.create(data);

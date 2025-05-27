@@ -5,6 +5,7 @@ import Dialog from "./components/Dialog";
 import LoginForm from "./forms/LoginForm";
 import RegisterForm from "./forms/RegisterForm";
 import ChatsList from "./components/ChatsList";
+import { Chat } from "./types/Chat";
 
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -16,6 +17,9 @@ const App: React.FC = () => {
   const [registerDialogOpen, setRegisterDialogOpen] = React.useState(false);
 
   const [name, setName] = useState<string>("");
+  const [id, setId] = useState<string>("");
+
+  const [chats, setChats] = useState<Chat[]>([]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -31,6 +35,7 @@ const App: React.FC = () => {
         if (response.ok) {
           const userData = await response.json();
           setName(userData.name);
+          setId(userData.id);
         } else {
           console.error("Failed to fetch user data");
         }
@@ -43,8 +48,36 @@ const App: React.FC = () => {
       fetchUserData();
     } else {
       setName("");
+      setId("");
     }
-  }, [token]);
+  }, [token, apiUrl]);
+
+  useEffect(() => {
+    const fetchUserChats = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/chats/user/${id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const chats = await response.json();
+          setChats(chats);
+          console.log("User chats:", chats);
+        } else {
+          console.error("Failed to fetch user chats");
+        }
+      } catch (error) {
+        console.error("Error fetching user chats:", error);
+      }
+    }
+    
+    if (token && id) {
+      fetchUserChats();
+    }
+  }, [id, token, apiUrl]);
 
   return (
     <>
@@ -89,7 +122,7 @@ const App: React.FC = () => {
 
         <div className="chats">
           {token ? (
-            <ChatsList />
+            <ChatsList chats={chats}/>
           ) : (
             <div className="chats--not-logged-in">
               <h2>Welcome to Chat App</h2>

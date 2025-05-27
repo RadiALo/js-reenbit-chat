@@ -1,29 +1,26 @@
 import React from "react";
 import ChatEntry from "./ChatEntry";
+import { Chat } from "../types/Chat";
 
-const ChatsList: React.FC = () => {
+type ChatEntryProps = {
+  chats: Chat[];
+}
+
+const ChatsList: React.FC<ChatEntryProps> = ({ chats }) => {
   return (
     <div className="chats--list">
-      <ChatEntry
-        name="Alice Freemab"
-        message="How was your meeting?"
-        date="Aug 17, 2012"
-      />
-      <ChatEntry
-        name="Alice Freemab"
-        message="How was your meeting?"
-        date="Aug 17, 2012"
-      />
-      <ChatEntry
-        name="Alice Freemab"
-        message="How was your meeting?"
-        date="Aug 17, 2012"
-      />
-      <ChatEntry
-        name="Alice Freemab"
-        message="How was your meeting?"
-        date="Aug 17, 2012"
-      />
+      <h2 className="chats--h">Chats</h2>
+
+      {
+        chats.map((chat, index) => (
+          <ChatEntry
+            key={index}
+            name={chat.responder.name}
+            message={chat.lastMessage?.text || "Start a conversation"}
+            date={chat.lastMessage?.date || ""}
+          />
+        ))
+      }
     </div>
   );
 };

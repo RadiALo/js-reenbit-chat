@@ -3,8 +3,8 @@ import { ChatRepository } from "../repositories/chat.repository";
 export class ChatService {
   private chatRepository = new ChatRepository();
 
-  async getChatsByUserId(userId: string) {
-    return await this.chatRepository.findAllByUserId(userId);
+  async getChatsByOwnerId(ownerId: string) {
+    return await this.chatRepository.findAllByOwnerId(ownerId);
   }
 
   async getChatById(chatId: string) {

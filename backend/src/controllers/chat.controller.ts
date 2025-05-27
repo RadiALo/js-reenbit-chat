@@ -8,9 +8,9 @@ export class ChatController {
 
   async getChatsByUserId(req: any, res: any) {
     try {
-      const userId = req.params.userId;
-      const chats = await this.chatService.getChatsByUserId(userId);
-
+      const ownerId = req.params.id;
+      const chats = await this.chatService.getChatsByOwnerId(ownerId);
+      console.log("Fetched chats for user:", ownerId, chats);
       if (!chats) {
         return res.status(404).json({ message: "No chats found for this user" });
       }
