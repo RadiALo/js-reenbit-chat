@@ -3,7 +3,9 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import { UserRouter } from './routers/user.router';
-import authMiddleware from './middleware/authMiddleware';
+import { ResponderRouter } from './routers/responder.router';
+import { ChatRouter } from './routers/chat.router';
+import { MessageRouter } from './routers/message.router';
 
 dotenv.config();
 
@@ -26,6 +28,9 @@ declare global {
 const app = express();
 
 const userRouter = new UserRouter();
+const responderRouter = new ResponderRouter();
+const chatRouter = new ChatRouter();
+const messageRouter = new MessageRouter();
 
 app.use(cors({
   origin: frontendUrl
@@ -33,7 +38,9 @@ app.use(cors({
 
 app.use(express.json());
 app.use('/api/users', userRouter.router);
-
+app.use('/api/responders', responderRouter.router);
+app.use('/api/chats', chatRouter.router);
+app.use('/api/messages', messageRouter.router);
 
 mongoose.connect(mongoUri)
   .then(() => {

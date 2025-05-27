@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
-import { RequestUserRegisterDto } from "../dtos/UserRequestDto";
-import { UserResponseDto } from "../dtos/UserResponseDto";
+import { UserLoginRequestDto, UserRegistrationRequestDto } from "../dtos/request/user.request.dto";
+import { UserResponseDto } from "../dtos/response/user.response.dto";
 import { validateOrReject } from "class-validator";
 
 export class UserController {
@@ -10,8 +10,8 @@ export class UserController {
   async getUsers(_: Request, res: Response) {
     try {
       const users = await this.userService.getUsers();
-
-      res.status(200).json(users);
+      const userDtos = users.map(user => new UserResponseDto(user));
+      res.status(200).json(userDtos);
     } catch (error) {
       res.status(500).json({ message: "Error fetching users", error });
       console.error("Error fetching users:", error);
@@ -20,7 +20,7 @@ export class UserController {
 
   async registerUser(req: Request, res: Response) {
     try {
-      const userDto = new RequestUserRegisterDto(req.body);
+      const userDto = new UserRegistrationRequestDto(req.body);
       await validateOrReject(userDto)
         .catch(_ => {
           res.status(400).json({ message: "Email, password, and name are required" });
@@ -37,14 +37,14 @@ export class UserController {
 
   async loginUser(req: Request, res: Response) {
     try {
-      const { email, password } = req.body;
+      const userDto = new UserLoginRequestDto(req.body);
 
-      if (!email || !password) {
+      if (!userDto.email || !userDto.password) {
         res.status(400).json({ message: "Email and password are required" });
         return;
       }
 
-      const { token, userId, expireDate } = await this.userService.loginUser(email, password);
+      const { token, userId, expireDate } = await this.userService.loginUser(userDto.email, userDto.password);
       
       res.status(200).json({ token, userId, expireDate });
     } catch (error: Error | any) {
