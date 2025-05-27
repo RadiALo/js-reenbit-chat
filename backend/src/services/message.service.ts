@@ -20,6 +20,8 @@ export class MessageService {
     });
 
     chat.lastMessage = message._id;
+    chat.messages.push(message._id);
+
     await this.chatRepository.update(chatId, chat);
 
     return message;
@@ -40,6 +42,8 @@ export class MessageService {
     });
 
     chat.lastMessage = message._id;
+    chat.messages.push(message._id);
+    
     await this.chatRepository.update(chatId, chat);
 
     return message;

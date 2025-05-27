@@ -5,8 +5,8 @@ import Dialog from "./components/Dialog";
 import LoginForm from "./forms/LoginForm";
 import RegisterForm from "./forms/RegisterForm";
 import ChatsList from "./components/ChatsList";
-import { Chat } from "./types/Chat";
-
+import Chat from "./components/Chat";
+import { ChatDto } from "./types/ChatDto";
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -19,7 +19,8 @@ const App: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [id, setId] = useState<string>("");
 
-  const [chats, setChats] = useState<Chat[]>([]);
+  const [chats, setChats] = useState<ChatDto[]>([]);
+  const [openedChat, setOpenedChat] = useState<ChatDto | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -122,7 +123,7 @@ const App: React.FC = () => {
 
         <div className="chats">
           {token ? (
-            <ChatsList chats={chats}/>
+            <ChatsList chats={chats} onChatClick={setOpenedChat}/>
           ) : (
             <div className="chats--not-logged-in">
               <h2>Welcome to Chat App</h2>
@@ -139,37 +140,7 @@ const App: React.FC = () => {
           )}
         </div>
 
-        <div className="chat-header">
-          <img className="user-icon" src="/user-icon.png" alt="User icon" />
-
-          <div className="chat-header--name">Alice Freeman</div>
-        </div>
-
-        <div className="chat-messages">
-          <div className="chat-messages--list">
-            <ChatMessage
-              text="How was your meeting?"
-              date="8/17/2022, 7:43 AM"
-              isUserMessage={false}
-            />
-            <ChatMessage
-              text="Not bad. What about you?"
-              date="8/17/2022, 7:45 AM"
-            />
-            <ChatMessage
-              text="How was your meeting?"
-              date="8/17/2022, 7:46 AM"
-            />
-          </div>
-
-          <div className="chat-messages--bar">
-            <textarea
-              className="chat-messages--bar--input"
-              rows={1}
-              placeholder="Type your message"
-            />
-          </div>
-        </div>
+        { <Chat chat={openedChat}/> }
       </div>
 
       <Dialog

@@ -5,13 +5,15 @@ export class ChatRepository {
     return await Chat.find({ owner: ownerId })
       .populate('responder')
       .populate('owner')
-      .populate('lastMessage');
+      .populate('lastMessage')
+      .populate('messages');
   }
 
   async findById(id: string) {
     const chat = await Chat.findOne({ _id: id })
       .populate('responder')
       .populate('owner')
+      .populate('lastMessage')
       .populate('messages');
     return chat;
   };
