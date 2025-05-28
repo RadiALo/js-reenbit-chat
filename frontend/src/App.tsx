@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import ChatMessage from "./components/ChatMessage";
 import Dialog from "./components/Dialog";
 import LoginForm from "./forms/LoginForm";
 import RegisterForm from "./forms/RegisterForm";
@@ -65,8 +64,17 @@ const App: React.FC = () => {
           },
         });
 
+
+        
         if (response.ok) {
           const chats = await response.json();
+
+          chats.slice().sort((a, b) => {
+          const dateA = a.lastMessage?.createdAt ? new Date(a.lastMessage.createdAt).getTime() : 0;
+          const dateB = b.lastMessage?.createdAt ? new Date(b.lastMessage.createdAt).getTime() : 0;
+
+          return dateB - dateA;
+        });
           setChats(chats);
           console.log("User chats:", chats);
         } else {
@@ -79,6 +87,9 @@ const App: React.FC = () => {
     
     if (token && id) {
       fetchUserChats();
+    } else {
+      setChats([]);
+      setOpenedChat(null);
     }
   }, [id, token, apiUrl]);
 
