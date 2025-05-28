@@ -19,9 +19,7 @@ const App: React.FC = () => {
   const [registerDialogOpen, setRegisterDialogOpen] = React.useState(false);
 
   const [name, setName] = useState<string>("");
-  const [id, setId] = useState<string>(
-    localStorage.getItem("userId") || ""
-  );
+  const [id, setId] = useState<string>(localStorage.getItem("userId") || "");
 
   const [chats, setChats] = useState<ChatDto[]>([]);
   const [openedChat, setOpenedChat] = useState<ChatDto | null>(null);
@@ -61,15 +59,20 @@ const App: React.FC = () => {
     if (!id) {
       return;
     }
+    socket.emit("register", id);
 
-    console.log('establishing connect!');
-    socket.emit('register', id);
+    const handleMessage = ({ message, chatId }: any) => {
+      if (openedChat && openedChat._id === chatId) {
+        appendMessageToOpenedChat(message);
+      }
+    };
 
-    socket.on('message', ({ message, chatId }) => {
-      console.log("Нове повідомлення:", message)
-      console.log("З чату:", chatId)
-    });
-  }, [id])
+    socket.on("message", handleMessage);
+
+    return () => {
+      socket.off("message", handleMessage);
+    };
+  }, [id, openedChat]);
 
   useEffect(() => {
     const fetchUserChats = async () => {
@@ -81,17 +84,20 @@ const App: React.FC = () => {
           },
         });
 
-
-        
         if (response.ok) {
           const chats = await response.json();
+          console.log(chats);
 
           chats.sort((a: ChatDto, b: ChatDto) => {
-          const dateA = a.lastMessage?.createdAt ? new Date(a.lastMessage.createdAt).getTime() : 0;
-          const dateB = b.lastMessage?.createdAt ? new Date(b.lastMessage.createdAt).getTime() : 0;
+            const dateA = a.lastMessage?.createdAt
+              ? new Date(a.lastMessage.createdAt).getTime()
+              : 0;
+            const dateB = b.lastMessage?.createdAt
+              ? new Date(b.lastMessage.createdAt).getTime()
+              : 0;
 
-          return dateB - dateA;
-        });
+            return dateB - dateA;
+          });
           setChats(chats);
         } else {
           console.error("Failed to fetch user chats");
@@ -99,12 +105,12 @@ const App: React.FC = () => {
       } catch (error) {
         console.error("Error fetching user chats:", error);
       }
-    }
+    };
 
     if (token && id) {
       fetchUserChats();
-    } else {      
-      const userId = id || localStorage.getItem('userId');
+    } else {
+      const userId = id || localStorage.getItem("userId");
 
       if (!id && userId) {
         setId(userId);
@@ -115,13 +121,16 @@ const App: React.FC = () => {
     }
   }, [id, token, apiUrl]);
 
-  const appendMessage = (message: MessageDto, isUserMessage: boolean = true) => {
-    setOpenedChat(prevChat => {
+  const appendMessageToOpenedChat = (
+    message: MessageDto,
+    isUserMessage: boolean = true
+  ) => {
+    setOpenedChat((prevChat) => {
       if (!prevChat) return prevChat;
 
       return {
         ...prevChat,
-        messages: [...(prevChat.messages || []), message]
+        messages: [...(prevChat.messages || []), message],
       };
     });
   };
@@ -169,24 +178,28 @@ const App: React.FC = () => {
 
         <div className="chats">
           {token ? (
-            <ChatsList chats={chats} onChatClick={setOpenedChat}/>
+            <ChatsList chats={chats} onChatClick={setOpenedChat} />
           ) : (
             <div className="chats--not-logged-in">
               <h2>Welcome to Chat App</h2>
-              <p>Please <button
-              className="link"
-              onClick={() => {
-                setRegisterDialogOpen(false);
-                setLoginDialogOpen(true);
-              }}
-            >
-              log in
-            </button> to start conversation!</p>
+              <p>
+                Please{" "}
+                <button
+                  className="link"
+                  onClick={() => {
+                    setRegisterDialogOpen(false);
+                    setLoginDialogOpen(true);
+                  }}
+                >
+                  log in
+                </button>{" "}
+                to start conversation!
+              </p>
             </div>
           )}
         </div>
 
-        { <Chat chat={openedChat} onSendMessage={appendMessage}/> }
+        {<Chat chat={openedChat} onSendMessage={appendMessageToOpenedChat} />}
       </div>
 
       <Dialog
