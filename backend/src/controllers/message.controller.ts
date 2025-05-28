@@ -33,6 +33,11 @@ export class MessageController {
         const responder = chat.responder as IResponder
         const responderId = responder._id.toString();
         const responderMessage = await this.getRandomQuote(responder.name);
+
+        if (!responderMessage) {
+          return;
+        }
+
         const message = await this.messageService.sendResponderMessage(dto.chatId, responderId, responderMessage)
         this.socketService.sendToUser(new MessageResponseDto(message), new ChatResponseDto(chat));
       }, 3000);
@@ -49,7 +54,9 @@ export class MessageController {
 
     const quote: Promise<string> = fetch(url).then(async (response) => {
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const data = await response.json();
+        console.error(data.content);
+        return null;
       }
 
       const data = await response.json();

@@ -15,7 +15,10 @@ const Chat: React.FC<ChatProps> = ({ chat, onSendMessage }) => {
 
   const handleSendMessage = (message: string) => {
     const sendMessage = async (message: string) => {
-      console.log("Sending message:", message);
+      if (!chat) {
+        return;
+      }
+
       const response = await fetch(`${apiUrl}/messages/send`, {
         method: "POST",
         headers: {
@@ -24,8 +27,8 @@ const Chat: React.FC<ChatProps> = ({ chat, onSendMessage }) => {
         },
 
         body: JSON.stringify({
-          chatId: chat?.id,
-          userId: chat?.owner._id,
+          chatId: chat._id,
+          userId: chat.owner._id,
           text: message,
         }),
       });

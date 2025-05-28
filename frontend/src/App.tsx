@@ -7,6 +7,7 @@ import ChatsList from "./components/ChatsList";
 import Chat from "./components/Chat";
 import { ChatDto } from "./types/ChatDto";
 import { MessageDto } from "./types/MessageDto";
+import { socket } from "./socket/socket";
 
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -18,7 +19,9 @@ const App: React.FC = () => {
   const [registerDialogOpen, setRegisterDialogOpen] = React.useState(false);
 
   const [name, setName] = useState<string>("");
-  const [id, setId] = useState<string>("");
+  const [id, setId] = useState<string>(
+    localStorage.getItem("userId") || ""
+  );
 
   const [chats, setChats] = useState<ChatDto[]>([]);
   const [openedChat, setOpenedChat] = useState<ChatDto | null>(null);
@@ -55,6 +58,20 @@ const App: React.FC = () => {
   }, [token, apiUrl]);
 
   useEffect(() => {
+    if (!id) {
+      return;
+    }
+
+    console.log('establishing connect!');
+    socket.emit('register', id);
+
+    socket.on('message', ({ message, chatId }) => {
+      console.log("Нове повідомлення:", message)
+      console.log("З чату:", chatId)
+    });
+  }, [id])
+
+  useEffect(() => {
     const fetchUserChats = async () => {
       try {
         const response = await fetch(`${apiUrl}/chats/user/${id}`, {
@@ -76,7 +93,6 @@ const App: React.FC = () => {
           return dateB - dateA;
         });
           setChats(chats);
-          console.log("User chats:", chats);
         } else {
           console.error("Failed to fetch user chats");
         }
@@ -84,10 +100,16 @@ const App: React.FC = () => {
         console.error("Error fetching user chats:", error);
       }
     }
-    
+
     if (token && id) {
       fetchUserChats();
-    } else {
+    } else {      
+      const userId = id || localStorage.getItem('userId');
+
+      if (!id && userId) {
+        setId(userId);
+      }
+
       setChats([]);
       setOpenedChat(null);
     }

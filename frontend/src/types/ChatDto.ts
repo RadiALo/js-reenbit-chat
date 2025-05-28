@@ -1,7 +1,7 @@
 import { MessageDto } from "./MessageDto";
 
 export type ChatDto = {
-  id: string;
+  _id: string;
 
   owner: {
     _id: string;

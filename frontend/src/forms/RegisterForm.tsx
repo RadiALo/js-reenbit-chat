@@ -29,7 +29,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, onRegist
 
     if (!response.ok) {
       const errorData = await response.json();
-      alert(`Login failed: ${errorData.message}`);
+      alert(`Registration failed: ${errorData.message}`);
       onRegisterError?.(errorData.message);
       return;
     }
@@ -38,7 +38,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, onRegist
     localStorage.setItem('token', jsonData.token.token);
     localStorage.setItem('userId', jsonData.token.userId);
     localStorage.setItem('expireDate', jsonData.token.expireDate);
-    onRegisterSuccess?.(jsonData.token);
+    onRegisterSuccess?.(jsonData.token.token);
   };
 
   return (

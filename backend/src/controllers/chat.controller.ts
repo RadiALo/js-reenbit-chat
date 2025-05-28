@@ -1,9 +1,6 @@
 import { ChatService } from "../services/chat.service";
 import { ChatResponseDto } from "../dtos/response/chat.response.dto";
 import { ChatRequestDto } from "../dtos/request/chat.request.dto";
-import { IChat } from "../models/chat.model";
-import { Server } from "socket.io";
-import { SocketService } from "../services/socket.service";
 
 export class ChatController {
   private chatService = new ChatService();

@@ -14,6 +14,6 @@ export class ChatResponseDto {
     this.owner = new UserResponseDto(data.owner);
     this.responder = new ResponderResponseDto(data.responder);
     this.lastMessage = data.lastMessage ? new MessageResponseDto(data.lastMessage) : undefined;
-    this.messages = data.messages.map((message: any) => { new MessageResponseDto(message) });
+    this.messages = data.messages.map((message: any) => { return new MessageResponseDto(message) });
   }
 }

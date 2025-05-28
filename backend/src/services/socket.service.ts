@@ -14,8 +14,6 @@ export class SocketService {
   }
 
   private onConnection(socket: Socket) {
-    console.log(`📡 New socket connected: ${socket.id}`);
-
     socket.on("register", (userId: string) => {
       this.userSockets.set(userId, socket.id);
       socket.data.userId = userId;
@@ -31,7 +29,7 @@ export class SocketService {
   }
 
   public sendToUser(message: MessageResponseDto, chat: ChatResponseDto) {
-    const socketId = this.userSockets.get(chat.owner._id);
+    const socketId = this.userSockets.get(chat.owner._id.toString());
 
     if (socketId) {
       this.io.to(socketId).emit("message", {
