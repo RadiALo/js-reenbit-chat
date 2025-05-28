@@ -69,7 +69,7 @@ const App: React.FC = () => {
         if (response.ok) {
           const chats = await response.json();
 
-          chats.slice().sort((a, b) => {
+          chats.sort((a: ChatDto, b: ChatDto) => {
           const dateA = a.lastMessage?.createdAt ? new Date(a.lastMessage.createdAt).getTime() : 0;
           const dateB = b.lastMessage?.createdAt ? new Date(b.lastMessage.createdAt).getTime() : 0;
 
