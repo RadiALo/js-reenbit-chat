@@ -29,7 +29,7 @@ export class MessageService {
 
   async sendResponderMessage(chatId: string, responderId: string, text: string) {
     const chat = await this.chatRepository.findById(chatId);
-    
+
     if (!chat) {
       throw new Error('Chat not found');
     }
@@ -43,9 +43,8 @@ export class MessageService {
 
     chat.lastMessage = message._id;
     chat.messages.push(message._id);
-    
-    await this.chatRepository.update(chatId, chat);
 
+    await this.chatRepository.update(chatId, chat);
     return message;
   }
 }

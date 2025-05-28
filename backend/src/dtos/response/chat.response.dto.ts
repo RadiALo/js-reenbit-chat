@@ -1,15 +1,19 @@
+import { MessageResponseDto } from "./message.response.dto";
+import { ResponderResponseDto } from "./responder.response.dto";
+import { UserResponseDto } from "./user.response.dto";
+
 export class ChatResponseDto {
-  id: string;
-  owner: string;
-  responder: string;
-  lastMessage: string;
-  messages: string[];
+  _id: string;
+  owner: UserResponseDto;
+  responder: ResponderResponseDto;
+  lastMessage: MessageResponseDto | undefined;
+  messages: MessageResponseDto[] | [];
 
   constructor(data: any) {
-    this.id = data._id;
-    this.owner = data.owner;
-    this.responder = data.responder;
-    this.lastMessage = data.lastMessage;
-    this.messages = data.messages;
+    this._id = data._id;
+    this.owner = new UserResponseDto(data.owner);
+    this.responder = new ResponderResponseDto(data.responder);
+    this.lastMessage = data.lastMessage ? new MessageResponseDto(data.lastMessage) : undefined;
+    this.messages = data.messages.map((message: any) => { new MessageResponseDto(message) });
   }
 }

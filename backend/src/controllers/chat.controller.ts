@@ -2,6 +2,8 @@ import { ChatService } from "../services/chat.service";
 import { ChatResponseDto } from "../dtos/response/chat.response.dto";
 import { ChatRequestDto } from "../dtos/request/chat.request.dto";
 import { IChat } from "../models/chat.model";
+import { Server } from "socket.io";
+import { SocketService } from "../services/socket.service";
 
 export class ChatController {
   private chatService = new ChatService();
@@ -10,7 +12,7 @@ export class ChatController {
     try {
       const ownerId = req.params.id;
       const chats = await this.chatService.getChatsByOwnerId(ownerId);
-      console.log("Fetched chats for user:", ownerId, chats);
+      
       if (!chats) {
         return res.status(404).json({ message: "No chats found for this user" });
       }

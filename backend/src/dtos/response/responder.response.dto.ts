@@ -1,9 +1,9 @@
 export class ResponderResponseDto {
-  id: string;
+  _id: string;
   name: string;
 
   constructor(data: any) {
-    this.id = data._id;
+    this._id = data._id;
     this.name = data.name;
   }
 }
