@@ -18,7 +18,7 @@ const ChatsList: React.FC<ChatEntryProps> = ({ chats, filter, onChatClick }) => 
           <ChatEntry
             key={index}
             onClick={() => onChatClick(chat)}
-            name={chat.responder.name}
+            name={!chat.prefferedName || chat.prefferedName === '' ? chat.responder.name : chat.prefferedName}
             message={chat.lastMessage?.text || "Start a conversation"}
             date={chat.lastMessage?.createdAt || ""}
           />

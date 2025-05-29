@@ -9,6 +9,7 @@ import { ChatDto } from "./types/ChatDto";
 import { MessageDto } from "./types/MessageDto";
 import { socket } from "./socket/socket";
 import { useNotification } from "./components/NotificationsList";
+import CreateChatForm from "./forms/CreateChatForm";
 
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -96,7 +97,6 @@ const App: React.FC = () => {
 
         if (response.ok) {
           const chats = await response.json();
-          console.log(chats);
 
           chats.sort((a: ChatDto, b: ChatDto) => {
             const dateA = a.lastMessage?.createdAt
@@ -192,9 +192,9 @@ const App: React.FC = () => {
             <>
               <ChatsList chats={chats} filter={search} onChatClick={setOpenedChat} />
               
-              <div className="chats--add-button">
+              <div className="chats--add-button-div">
                 <button
-                  className="button"
+                  className="chats--add-button"
                   onClick={() => {setCreateChatDialogOpen(true)}}
                 >
                   +
@@ -291,9 +291,14 @@ const App: React.FC = () => {
           setCreateChatDialogOpen(false);
         }}
       >
-        <div>
-
-        </div>
+        <CreateChatForm
+          userId={id}
+          onCreateSuccess={(chat) => {
+            setOpenedChat(chat);
+            setChats((prevChats) => [...prevChats, chat]);
+            setCreateChatDialogOpen(false);
+          }}
+        />
       </Dialog>
     </>
   );

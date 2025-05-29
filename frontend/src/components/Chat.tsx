@@ -53,7 +53,7 @@ const Chat: React.FC<ChatProps> = ({ chat, onSendMessage }) => {
       <div className="chat-header">
         <img className="user-icon" src="/user-icon.png" alt="User icon" />
 
-        <div className="chat-header--name">{chat?.responder.name}</div>
+        <div className="chat-header--name">{chat && (chat.prefferedName || chat.responder.name)}</div>
       </div>
 
       <div className="chat-messages">

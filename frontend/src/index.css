@@ -65,6 +65,8 @@
 }
 
 .chats {
+  overflow-y: auto;
+  max-height: 100%;
   position: relative;
   grid-area: 3 / 1 / 6 / 3;
   background-color: var(--chats-background-color);
@@ -83,9 +85,17 @@
 }
 
 .chats--add-button {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
+  color: var(--acent-text-color);
+  background-color: var(--button-background-color);
+  font-weight: 600;
+  font-size: large;
+  border-radius: 50%;
+  border: 1px solid var(--light-border-color);
+  position: fixed;
+  bottom: 32px;
+  left: 35%;
+  width: 32px;
+  height: 32px;
 }
 
 .chats--not-logged-in {

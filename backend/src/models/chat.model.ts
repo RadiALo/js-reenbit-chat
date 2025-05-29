@@ -24,6 +24,7 @@ const chatSchema = new Schema<IChat>({
 
   prefferedName: {
     type: Schema.Types.String,
+    default: ''
   },
 
   messages: [{

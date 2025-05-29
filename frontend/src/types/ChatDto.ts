@@ -13,6 +13,7 @@ export type ChatDto = {
     name: string;
   }
 
+  prefferedName: string;
   lastMessage?: MessageDto;
   messages: MessageDto[]
 }

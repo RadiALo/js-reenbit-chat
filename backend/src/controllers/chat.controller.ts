@@ -44,7 +44,7 @@ export class ChatController {
       const chatDto = new ChatRequestDto(req.body);
       const newChat = await this.chatService.createChat(chatDto);
 
-      res.status(201).json(newChat);
+      res.status(201).json(new ChatResponseDto(newChat));
     } catch (error: Error | any) {
       res.status(500).json({ message: "Error creating chat", error });
       console.error("Error creating chat:", error);

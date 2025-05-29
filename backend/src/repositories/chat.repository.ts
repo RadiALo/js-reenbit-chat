@@ -3,18 +3,12 @@ import { Chat } from '../models/chat.model';
 export class ChatRepository {
   async findAllByOwnerId(ownerId: string) {
     return await Chat.find({ owner: ownerId })
-      .populate('responder')
-      .populate('owner')
-      .populate('lastMessage')
-      .populate('messages');
+      .populate(['responder', 'owner', 'lastMessage', 'messages']);
   }
 
   async findById(id: string) {
     return await Chat.findOne({ _id: id })
-      .populate('responder')
-      .populate('owner')
-      .populate('lastMessage')
-      .populate('messages');;
+      .populate(['responder', 'owner', 'lastMessage', 'messages']);
   };
 
   async update(id: string, data: any) {
@@ -22,6 +16,8 @@ export class ChatRepository {
   }
 
   async create(data: any) {
-    return await Chat.create(data);
+    const chat = await Chat.create(data);
+
+    return chat.populate(['responder', 'owner']);
   }
 }
