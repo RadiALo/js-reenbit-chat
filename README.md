@@ -5,7 +5,7 @@ You can try the app [live demo](https://js-reenbit-chat.onrender.com)!
 
 ## 📌 Objective
 
-This is a full-stack chat application built as part of a test assignment. It allows users to create and manage multiple chats, send messages, and receive automatic responses from the backend using random quotes from the [Quotable API](https://api.quotable.io). The app includes real-time features using WebSockets.
+This is a full-stack chat application built as part of a test assignment. It allows users to create and manage multiple chats, send messages, and receive automatic responses from the backend using random quotes from the [Quotable API](https://github.com/lukePeavey/quotable). The app includes real-time features using WebSockets.
 
 
 ## ✅ Features
