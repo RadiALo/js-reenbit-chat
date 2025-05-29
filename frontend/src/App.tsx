@@ -8,9 +8,12 @@ import Chat from "./components/Chat";
 import { ChatDto } from "./types/ChatDto";
 import { MessageDto } from "./types/MessageDto";
 import { socket } from "./socket/socket";
+import { useNotification } from "./components/NotificationsList";
 
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
+
+  const { notify } = useNotification();
 
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
@@ -62,6 +65,10 @@ const App: React.FC = () => {
     socket.emit("register", id);
 
     const handleMessage = ({ message, chatId }: any) => {
+      const chat = chats.find((chat) => chat._id === chatId);
+
+      notify(chat?.responder.name || "", message.text);
+
       if (openedChat && openedChat._id === chatId) {
         appendMessageToOpenedChat(message);
       }
@@ -201,6 +208,8 @@ const App: React.FC = () => {
 
         {<Chat chat={openedChat} onSendMessage={appendMessageToOpenedChat} />}
       </div>
+
+      
 
       <Dialog
         title="Log In"

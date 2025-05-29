@@ -24,7 +24,7 @@ export class MessageController {
 
       setTimeout(async () => {
         const chat = await this.chatService.getChatById(dto.chatId) as IChat;
-        console.log("Chat retrieved:", chat);
+
         if (!chat) {
           console.error("Chat not found");
           return;
