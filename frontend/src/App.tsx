@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import Dialog from "./components/Dialog";
+import Dialog from "./components/Dialog/Dialog";
 import LoginForm from "./forms/LoginForm";
 import RegisterForm from "./forms/RegisterForm";
-import ChatsList from "./components/ChatsList";
-import Chat from "./components/Chat";
+import ChatsList from "./components/ChatsList/ChatsList";
+import Chat from "./components/Chat/Chat";
 import { ChatDto } from "./types/ChatDto";
 import { MessageDto } from "./types/MessageDto";
 import { socket } from "./socket/socket";

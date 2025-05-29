@@ -1,3 +1,4 @@
+import './ChatMessage.css'
 import React from "react";
 
 type ChatMessageProps = {

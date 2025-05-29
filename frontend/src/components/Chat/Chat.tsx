@@ -1,8 +1,9 @@
+import './Chat.css';
 import React from "react";
-import ChatMessage from "./ChatMessage";
-import { ChatDto } from "../types/ChatDto";
-import SendMessageBar from "./SendMessageBar";
-import { MessageDto } from "../types/MessageDto";
+import ChatMessage from "../ChatMessage/ChatMessage";
+import { ChatDto } from "../../types/ChatDto";
+import SendMessageBar from "../SendMessageBar/SendMessageBar";
+import { MessageDto } from "../../types/MessageDto";
 
 type ChatProps = {
   chat: ChatDto | null;

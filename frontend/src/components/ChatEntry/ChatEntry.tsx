@@ -1,3 +1,4 @@
+import './ChatEntry.css'
 import React from "react";
 
 type ChatEntryProps = {

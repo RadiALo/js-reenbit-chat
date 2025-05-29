@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, createContext, ReactNode } from "react";
-import Notification from "./Notification";
+import Notification from "./Notification/Notification";
 
 interface NotificationItem {
   id: number;

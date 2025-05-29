@@ -1,3 +1,4 @@
+import './SendMessageBar.css'
 import React, { useState, useRef, useEffect } from "react";
 
 interface SendMessageBarProps {

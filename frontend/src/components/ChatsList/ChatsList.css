@@ -1,0 +1,10 @@
+.chats--h {
+  color: var(--acent-text-color);
+  font-weight: 300;
+  margin: 20px 12px;
+}
+
+.chats--list {
+  display: flex;
+  flex-direction: column;
+}

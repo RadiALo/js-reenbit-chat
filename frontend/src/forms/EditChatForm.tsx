@@ -1,3 +1,4 @@
+import './forms.css'
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ChatDto } from "../types/ChatDto";

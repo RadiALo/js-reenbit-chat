@@ -1,3 +1,4 @@
+import './Dialog.css'
 import React, { ReactNode, useState } from "react";
 
 type DialogProps = {
