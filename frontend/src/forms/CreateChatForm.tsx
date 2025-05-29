@@ -33,10 +33,12 @@ const CreateChatForm: React.FC<CreateChatProps> = ({ userId, onCreateSuccess, on
   })
 
   const onSubmit = async (data: FormData) => {
+    const token = localStorage.getItem("token");
     const response = await fetch(`${apiUrl}/chats`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ ...data, ownerId: userId })
     });

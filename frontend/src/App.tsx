@@ -53,7 +53,10 @@ const App: React.FC = () => {
     }
 
     const response = await fetch(`${apiUrl}/chats/${openedChat._id}`, {
-      method: "DELETE"
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     });
 
      if (!response.ok) {

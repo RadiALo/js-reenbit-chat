@@ -28,10 +28,12 @@ const EditChatForm: React.FC<EditChatFormProps> = ({
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
+    const token = localStorage.getItem("token");
     const response = await fetch(`${apiUrl}/chats/preffered`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ ...data, chatId: chat._id }),
     });
