@@ -9,7 +9,7 @@ export class ChatController {
     try {
       const ownerId = req.params.id;
       const chats = await this.chatService.getChatsByOwnerId(ownerId);
-      
+
       if (!chats) {
         return res.status(404).json({ message: "No chats found for this user" });
       }
@@ -54,7 +54,7 @@ export class ChatController {
   async updatePrefferedName(req: any, res: any) {
     try {
       const { chatId, prefferedName } = req.body;
-      
+
       if (!chatId || !prefferedName) {
         return res.status(400).json({ message: 'chatId and prefferedName is required.' });
       }
@@ -62,13 +62,29 @@ export class ChatController {
       const newChat = await this.chatService.updatePrefferedName(chatId, prefferedName);
 
       if (!newChat) {
-        return res.status(404).json({ message: 'Chat not found.' });
+        return res.status(404).json({ message: 'Chat not found' });
       }
 
       res.status(200).json(new ChatResponseDto(newChat));
     } catch (error: Error | any) {
-        res.status(500).json({ message: 'Server internall error.' });
-        console.error('Error updaitng preffered name:', error);
+      res.status(500).json({ message: 'Server internall error' });
+      console.error('Error updaitng preffered name:', error);
+    }
+  }
+
+  async deleteChat(req: any, res: any) {
+    try {
+      const chatId = req.params.id;
+
+      if (!chatId) {
+        res.status(400).json({ message: 'chatId is required' })
       }
+
+      this.chatService.deleteChat(chatId);
+      res.status(200).json({ message: 'Success' })
+    } catch (error: Error | any) {
+      res.status(500).json({ message: 'Server internall error' });
+      console.error('Error deleting chat:', error);
+    }
   }
 }

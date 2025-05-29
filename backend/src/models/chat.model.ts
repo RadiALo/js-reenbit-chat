@@ -1,5 +1,6 @@
 import { Schema, model, Types, Document } from 'mongoose';
 import { IResponder } from './responder.model';
+import { Message } from './message.model';
 
 export interface IChat extends Document {
   owner: Types.ObjectId;
@@ -38,5 +39,17 @@ const chatSchema = new Schema<IChat>({
     ref: 'Message'
   }
 })
+
+chatSchema.pre('findOneAndDelete', async function (next) {
+  const chat = await this.model.findOne(this.getFilter());
+
+  if (chat) {
+    const messageIds = [...chat.messages];
+
+    await Message.deleteMany({ _id: { $in: messageIds } });
+  }
+
+  next();
+});
 
 export const Chat = model<IChat>('Chat', chatSchema);

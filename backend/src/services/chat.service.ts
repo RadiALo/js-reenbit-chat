@@ -22,4 +22,8 @@ export class ChatService {
   async updatePrefferedName(chatId: string, prefferedName: string) {
     return await this.chatRepository.updatePrefferedName(chatId, prefferedName);
   }
+
+  async deleteChat(chatId: string) {
+    return await this.chatRepository.deleteChat(chatId);
+  }
 }

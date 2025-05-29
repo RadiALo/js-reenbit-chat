@@ -28,4 +28,8 @@ export class ChatRepository {
       { new: true }
     )
   }
+
+  async deleteChat(chatId: string) {
+    return await Chat.findByIdAndDelete(chatId);
+  }
 }

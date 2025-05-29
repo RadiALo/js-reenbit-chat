@@ -25,6 +25,7 @@ const App: React.FC = () => {
   const [registerDialogOpen, setRegisterDialogOpen] = React.useState<boolean>(false);
   const [createChatDialogOpen, setCreateChatDialogOpen] = React.useState<boolean>(false);
   const [editChatDialogOpen, setEditChatDialogOpen] = React.useState<boolean>(false);
+  const [deleteChatDialogOpen, setDeleteChatDialogOpen] = React.useState<boolean>(false);
 
   const [name, setName] = useState<string>("");
   const [id, setId] = useState<string>(localStorage.getItem("userId") || "");
@@ -42,6 +43,26 @@ const App: React.FC = () => {
         return chat;
       })
     );
+  }
+
+  const handleChatDelete = async () => {
+    setDeleteChatDialogOpen(false);
+
+    if (!openedChat) {
+      return;
+    }
+
+    const response = await fetch(`${apiUrl}/chats/${openedChat._id}`, {
+      method: "DELETE"
+    });
+
+     if (!response.ok) {
+      console.error("Failed to delete chat");
+      return;
+    }
+
+    setChats(prevChats => prevChats.filter(chat => chat._id !== openedChat._id));
+    setOpenedChat(null);
   }
 
   useEffect(() => {
@@ -175,7 +196,6 @@ const App: React.FC = () => {
     updateChat(chat);
   };
 
-
   return (
     <>
       <div className="main-grid">
@@ -258,6 +278,9 @@ const App: React.FC = () => {
           onSendMessage={appendMessageToOpenedChat}
           onEditRequest={() => {
             setEditChatDialogOpen(true)
+          }}
+          onDeleteRequest={() => {
+            setDeleteChatDialogOpen(true)
           }}
         />}
       </div>
@@ -357,6 +380,35 @@ const App: React.FC = () => {
           setEditChatDialogOpen(false);
         }}
       />}
+      </Dialog>
+
+      <Dialog
+        title="Delete Chat"
+        isOpen={deleteChatDialogOpen}
+        onClose={() => {
+          setDeleteChatDialogOpen(false);
+        }}
+      >
+        <div>
+          <div>Are you sure you want to delete chat?</div>
+          <div>
+            <button
+              className='button'
+              onClick={handleChatDelete}
+            >
+              Yes
+            </button>
+            
+            <button
+              className='button'
+              onClick={() => {
+                setDeleteChatDialogOpen(false)
+              }}
+            >
+              No
+            </button>
+          </div>
+        </div>
       </Dialog>
     </>
   );

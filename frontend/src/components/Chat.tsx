@@ -8,9 +8,10 @@ type ChatProps = {
   chat: ChatDto | null;
   onSendMessage?: (message: MessageDto) => void;
   onEditRequest?: () => void;
+  onDeleteRequest?: () => void;
 };
 
-const Chat: React.FC<ChatProps> = ({ chat, onSendMessage, onEditRequest }) => {
+const Chat: React.FC<ChatProps> = ({ chat, onSendMessage, onEditRequest, onDeleteRequest }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
 
@@ -56,7 +57,10 @@ const Chat: React.FC<ChatProps> = ({ chat, onSendMessage, onEditRequest }) => {
 
         <div className="chat-header--name">{chat && (chat.prefferedName || chat.responder.name)}</div>
 
-        <div> <button onClick={onEditRequest} className="button">Edit</button> </div>
+        <div>
+          <button onClick={onEditRequest} className="button">Edit</button>
+          <button onClick={onDeleteRequest} className="button">Delete</button>
+        </div>
       </div>
 
       <div className="chat-messages">
