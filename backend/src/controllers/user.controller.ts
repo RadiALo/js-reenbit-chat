@@ -18,24 +18,30 @@ export class UserController {
     }
   }
 
-  async registerUser(req: Request, res: Response) {
+  async registerUser(
+    req: Request<unknown, unknown, UserRegistrationRequestDto>,
+    res: Response
+  ) {
     try {
       const userDto = new UserRegistrationRequestDto(req.body);
       await validateOrReject(userDto)
         .catch(_ => {
           res.status(400).json({ message: "Email, password, and name are required" });
-      });
+        });
 
       const user = await this.userService.registerUser(userDto.email, userDto.password, userDto.name);
       const token = await this.userService.loginUser(userDto.email, userDto.password);
-      res.status(201).json({user: new UserResponseDto(user), token});
+      res.status(201).json({ user: new UserResponseDto(user), token });
     } catch (error: Error | any) {
       res.status(500).json({ message: "Error registering user", error });
       console.error("Error registering user:", error);
     }
   }
 
-  async loginUser(req: Request, res: Response) {
+  async loginUser(
+    req: Request<unknown, unknown, UserLoginRequestDto>,
+    res: Response
+  ) {
     try {
       const userDto = new UserLoginRequestDto(req.body);
 
@@ -45,7 +51,7 @@ export class UserController {
       }
 
       const { token, userId, expireDate } = await this.userService.loginUser(userDto.email, userDto.password);
-      
+
       res.status(200).json({ token, userId, expireDate });
     } catch (error: Error | any) {
       res.status(500).json({ message: "Error logging in user", error });
@@ -53,7 +59,10 @@ export class UserController {
     }
   }
 
-  async getCurrentUser(req: Request, res: Response) {
+  async getCurrentUser(
+    req: Request<{ id: string }>,
+    res: Response
+  ) {
     try {
       const userId = req.token?.userId;
 

@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { MessageRequestDto } from "../dtos/request/message.request.dto";
 import { MessageService } from "../services/message.service";
 import { ChatService } from "../services/chat.service";
@@ -17,7 +18,10 @@ export class MessageController {
     this.socketService = socketService;
   }
 
-  async sendUserMessage(req: any, res: any) {
+  async sendUserMessage(
+    req: Request<unknown, unknown, MessageRequestDto>,
+    res: Response
+  ) {
     try {
       const dto = new MessageRequestDto(req.body);
       const message = await this.messageService.sendUserMessage(dto.chatId, dto.userId, dto.text);

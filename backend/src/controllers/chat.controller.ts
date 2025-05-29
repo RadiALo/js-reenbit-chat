@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { ChatService } from "../services/chat.service";
 import { ChatResponseDto } from "../dtos/response/chat.response.dto";
 import { ChatRequestDto } from "../dtos/request/chat.request.dto";
@@ -5,7 +6,10 @@ import { ChatRequestDto } from "../dtos/request/chat.request.dto";
 export class ChatController {
   private chatService = new ChatService();
 
-  async getChatsByUserId(req: any, res: any) {
+  async getChatsByUserId(
+    req: Request<{ id: string }>,
+    res: Response
+  ) {
     try {
       const ownerId = req.params.id;
       const chats = await this.chatService.getChatsByOwnerId(ownerId);
@@ -23,7 +27,10 @@ export class ChatController {
     }
   }
 
-  async getChatById(req: any, res: any) {
+  async getChatById(
+    req: Request<{ id: string }>,
+    res: Response
+  ) {
     try {
       const chatId = req.params.id;
       const chat = await this.chatService.getChatById(chatId);
@@ -39,7 +46,10 @@ export class ChatController {
     }
   }
 
-  async createChat(req: any, res: any) {
+  async createChat(
+    req: Request<unknown, unknown,
+      ChatRequestDto>, res: Response
+  ) {
     try {
       const chatDto = new ChatRequestDto(req.body);
       const newChat = await this.chatService.createChat(chatDto);
@@ -51,7 +61,10 @@ export class ChatController {
     }
   }
 
-  async updatePrefferedName(req: any, res: any) {
+  async updatePrefferedName(
+    req: Request<unknown, unknown, { chatId: string, prefferedName: string }>,
+    res: Response
+  ) {
     try {
       const { chatId, prefferedName } = req.body;
 
@@ -72,7 +85,7 @@ export class ChatController {
     }
   }
 
-  async deleteChat(req: any, res: any) {
+  async deleteChat(req: Request<{ id: string }>, res: Response) {
     try {
       const chatId = req.params.id;
 
