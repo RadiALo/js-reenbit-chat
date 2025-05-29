@@ -14,5 +14,6 @@ export class ChatRouter {
     this.router.get('/user/:id', this.controller.getChatsByUserId.bind(this.controller));
     this.router.get('/:id', this.controller.getChatById.bind(this.controller));
     this.router.post('/', this.controller.createChat.bind(this.controller));
+    this.router.patch('/preffered', this.controller.updatePrefferedName.bind(this.controller));
   }
 }

@@ -18,4 +18,8 @@ export class ChatService {
       prefferedName: data.prefferedName
     });
   }
+
+  async updatePrefferedName(chatId: string, prefferedName: string) {
+    return await this.chatRepository.updatePrefferedName(chatId, prefferedName);
+  }
 }

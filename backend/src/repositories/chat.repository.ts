@@ -20,4 +20,12 @@ export class ChatRepository {
 
     return chat.populate(['responder', 'owner']);
   }
+
+  async updatePrefferedName(chatId: string, prefferedName: string) {
+    return await Chat.findByIdAndUpdate(
+      chatId,
+      { $set: { prefferedName }},
+      { new: true }
+    )
+  }
 }

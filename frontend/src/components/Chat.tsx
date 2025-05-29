@@ -7,9 +7,10 @@ import { MessageDto } from "../types/MessageDto";
 type ChatProps = {
   chat: ChatDto | null;
   onSendMessage?: (message: MessageDto) => void;
+  onEditRequest?: () => void;
 };
 
-const Chat: React.FC<ChatProps> = ({ chat, onSendMessage }) => {
+const Chat: React.FC<ChatProps> = ({ chat, onSendMessage, onEditRequest }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const token = localStorage.getItem("token");
 
@@ -54,6 +55,8 @@ const Chat: React.FC<ChatProps> = ({ chat, onSendMessage }) => {
         <img className="user-icon" src="/user-icon.png" alt="User icon" />
 
         <div className="chat-header--name">{chat && (chat.prefferedName || chat.responder.name)}</div>
+
+        <div> <button onClick={onEditRequest} className="button">Edit</button> </div>
       </div>
 
       <div className="chat-messages">

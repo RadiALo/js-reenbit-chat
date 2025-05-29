@@ -10,6 +10,7 @@ import { MessageDto } from "./types/MessageDto";
 import { socket } from "./socket/socket";
 import { useNotification } from "./components/NotificationsList";
 import CreateChatForm from "./forms/CreateChatForm";
+import EditChatForm from "./forms/EditChatForm";
 
 const App: React.FC = () => {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -23,6 +24,7 @@ const App: React.FC = () => {
   const [loginDialogOpen, setLoginDialogOpen] = React.useState<boolean>(false);
   const [registerDialogOpen, setRegisterDialogOpen] = React.useState<boolean>(false);
   const [createChatDialogOpen, setCreateChatDialogOpen] = React.useState<boolean>(false);
+  const [editChatDialogOpen, setEditChatDialogOpen] = React.useState<boolean>(false);
 
   const [name, setName] = useState<string>("");
   const [id, setId] = useState<string>(localStorage.getItem("userId") || "");
@@ -30,6 +32,17 @@ const App: React.FC = () => {
   const [chats, setChats] = useState<ChatDto[]>([]);
   const [search, setSearch] = useState<string>('')
   const [openedChat, setOpenedChat] = useState<ChatDto | null>(null);
+
+  const updateChat = (updatedChat: ChatDto) => {
+    setChats(
+      chats.map((chat) => {
+        if (chat._id === updatedChat._id) {
+          return updatedChat;
+        }
+        return chat;
+      })
+    );
+  }
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -69,13 +82,21 @@ const App: React.FC = () => {
     socket.emit("register", id);
 
     const handleMessage = ({ message, chatId }: any) => {
-      const chat = chats.find((chat) => chat._id === chatId);
+      const chat: ChatDto | null = chats.find((chat) => chat._id === chatId) || null;
 
-      notify(chat?.responder.name || "", message.text);
+      if (!chat) {
+        return;
+      }
+
+      notify(chat.responder.name || "", message.text);
 
       if (openedChat && openedChat._id === chatId) {
         appendMessageToOpenedChat(message);
       }
+
+      chat.messages.push(message);
+      chat.lastMessage = message;
+      updateChat(chat)
     };
 
     socket.on("message", handleMessage);
@@ -83,7 +104,7 @@ const App: React.FC = () => {
     return () => {
       socket.off("message", handleMessage);
     };
-  }, [id, openedChat]);
+  }, [id, openedChat, chats, notify]);
 
   useEffect(() => {
     const fetchUserChats = async () => {
@@ -142,7 +163,18 @@ const App: React.FC = () => {
         messages: [...(prevChat.messages || []), message],
       };
     });
+
+    
+    const chat: ChatDto | null = chats.find((chat) => chat._id === openedChat?._id) || null;
+
+    if (!chat) {
+      return;
+    }
+
+    chat.lastMessage = message;
+    updateChat(chat);
   };
+
 
   return (
     <>
@@ -221,7 +253,13 @@ const App: React.FC = () => {
           )}
         </div>
 
-        {<Chat chat={openedChat} onSendMessage={appendMessageToOpenedChat} />}
+        {<Chat
+          chat={openedChat}
+          onSendMessage={appendMessageToOpenedChat}
+          onEditRequest={() => {
+            setEditChatDialogOpen(true)
+          }}
+        />}
       </div>
 
       
@@ -299,6 +337,26 @@ const App: React.FC = () => {
             setCreateChatDialogOpen(false);
           }}
         />
+      </Dialog>
+
+      <Dialog
+        title="Chat Settings"
+        isOpen={editChatDialogOpen}
+        onClose={() => {
+          setEditChatDialogOpen(false);
+        }}
+      >
+        {openedChat && <EditChatForm
+        chat={openedChat}
+        onClose={() => {
+          setEditChatDialogOpen(false);
+        }}
+        onUpdateSuccess={(chat) => {
+          setOpenedChat(chat);
+          updateChat(chat);
+          setEditChatDialogOpen(false);
+        }}
+      />}
       </Dialog>
     </>
   );

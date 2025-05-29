@@ -157,6 +157,7 @@
 }
 
 .chat-header--name {
+  flex: 1;
   font-weight: 500;
 }
 
