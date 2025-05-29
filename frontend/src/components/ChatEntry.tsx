@@ -4,11 +4,12 @@ type ChatEntryProps = {
   name: string;
   message: string;
   date: string;
+  onClick?: () => void;
 };
 
-const ChatEntry: React.FC<ChatEntryProps> = ({ name, message, date }) => {
+const ChatEntry: React.FC<ChatEntryProps> = ({ name, message, date, onClick }) => {
   return (
-    <div className="chats--item">
+    <div onClick={onClick} className="chats--item">
       <img className="user-icon" src="/user-icon.png" alt="User icon" />
       <div className="chats--item--text">
         <p className="chats--item--text--name">{name}</p>

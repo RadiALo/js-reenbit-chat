@@ -3,10 +3,19 @@ import { MessageService } from "../services/message.service";
 import { ChatService } from "../services/chat.service";
 import { IResponder } from "../models/responder.model";
 import { IChat } from "../models/chat.model";
+import { SocketService } from "../services/socket.service";
+import { MessageResponseDto } from "../dtos/response/message.response.dto";
+import { ChatResponseDto } from "../dtos/response/chat.response.dto";
 
 export class MessageController {
-  private messageService = new MessageService();
+  private messageService;
   private chatService = new ChatService();
+  private socketService;
+
+  constructor(socketService: SocketService) {
+    this.messageService = new MessageService();
+    this.socketService = socketService;
+  }
 
   async sendUserMessage(req: any, res: any) {
     try {
@@ -15,17 +24,22 @@ export class MessageController {
 
       setTimeout(async () => {
         const chat = await this.chatService.getChatById(dto.chatId) as IChat;
-        console.log("Chat retrieved:", chat);
+
         if (!chat) {
           console.error("Chat not found");
           return;
         }
-        
+
         const responder = chat.responder as IResponder
         const responderId = responder._id.toString();
         const responderMessage = await this.getRandomQuote(responder.name);
-        console.log("Responder message:", responderMessage);
-        this.messageService.sendResponderMessage(dto.chatId, responderId, responderMessage)
+
+        if (!responderMessage) {
+          return;
+        }
+
+        const message = await this.messageService.sendResponderMessage(dto.chatId, responderId, responderMessage)
+        this.socketService.sendToUser(new MessageResponseDto(message), new ChatResponseDto(chat));
       }, 3000);
 
       res.status(201).json(message);
@@ -36,12 +50,13 @@ export class MessageController {
   }
 
   private async getRandomQuote(responderName: string): Promise<string> {
-    console.log("Fetching quote for responder:", responderName);
     const url = `https://api.quotable.io/random?author=${encodeURIComponent(responderName)}`;
 
     const quote: Promise<string> = fetch(url).then(async (response) => {
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const data = await response.json();
+        console.error(data.content);
+        return null;
       }
 
       const data = await response.json();

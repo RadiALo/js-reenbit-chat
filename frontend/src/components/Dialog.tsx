@@ -21,7 +21,7 @@ const Dialog: React.FC<DialogProps> = ({ title, children, isOpen, onClose }) => 
         <div className="dialog--header">
           <h2 className="dialog--title">{title}</h2>
 
-          <button className="button" onClick={onClose}>X</button>
+          <button className="button" onClick={onClose}>✕</button>
         </div>
         { children }
       </div>

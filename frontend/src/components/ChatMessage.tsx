@@ -23,7 +23,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ text, date, isUserMessage = t
         <img className='user-icon' src={senderIconUri} alt="Sender icon" />
       )}
 
-      <div>
+      <div className="chat-messages--item--content">
         <div className={`chat-messages--item--message ${isUserMessage ? "" : "sender-message"}`}>
           {text}
         </div>

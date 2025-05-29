@@ -1,12 +1,12 @@
 export class UserResponseDto {
-  id: string;
+  _id: string;
   email: string;
   name: string;
   token?: string;
   createdAt: Date;
 
   constructor(data: any) {
-    this.id = data._id;
+    this._id = data._id;
     this.email = data.email;
     this.name = data.name;
     this.createdAt = data.createdAt;

@@ -61,7 +61,7 @@ export class ResponderController {
       const storedApiIds: string[] = storedResponders.map((r: any) => r.apiId);
 
       const newResponders = responders.filter(
-        (responder) => responder.quoteCount > 0 && responder.apiId && !storedApiIds.includes(responder.apiId)
+        (responder) => responder.quoteCount > 5 && responder.apiId && !storedApiIds.includes(responder.apiId)
       );
 
       if (newResponders.length > 0) {

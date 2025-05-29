@@ -1,22 +1,35 @@
 import { Chat } from '../models/chat.model';
 
 export class ChatRepository {
-  async findAllByUserId(userId: string) {
-    return await Chat.find({ owner: userId })
-      .populate('responder')
-      .populate('owner')
-      .populate('lastMessage');
+  async findAllByOwnerId(ownerId: string) {
+    return await Chat.find({ owner: ownerId })
+      .populate(['responder', 'owner', 'lastMessage', 'messages']);
   }
 
   async findById(id: string) {
-    const chat = await Chat.findOne({ _id: id })
-      .populate('responder')
-      .populate('owner')
-      .populate('messages');
-    return chat;
+    return await Chat.findOne({ _id: id })
+      .populate(['responder', 'owner', 'lastMessage', 'messages']);
   };
 
+  async update(id: string, data: any) {
+    return await Chat.findByIdAndUpdate(id, data);
+  }
+
   async create(data: any) {
-    return await Chat.create(data);
+    const chat = await Chat.create(data);
+
+    return chat.populate(['responder', 'owner']);
+  }
+
+  async updatePrefferedName(chatId: string, prefferedName: string) {
+    return await Chat.findByIdAndUpdate(
+      chatId,
+      { $set: { prefferedName }},
+      { new: true }
+    )
+  }
+
+  async deleteChat(chatId: string) {
+    return await Chat.findByIdAndDelete(chatId);
   }
 }

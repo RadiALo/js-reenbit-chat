@@ -1,11 +1,13 @@
 import { Router } from "express";
 import { MessageController } from "../controllers/message.controller";
+import { SocketService } from "../services/socket.service";
 
 export class MessageRouter {
   public router: Router;
-  private controller = new MessageController();
+  private controller;
 
-  constructor() {
+  constructor(socketService: SocketService) {
+    this.controller = new MessageController(socketService);
     this.router = Router();
     this.initializeRoutes();
   }

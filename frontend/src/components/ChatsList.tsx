@@ -1,29 +1,29 @@
 import React from "react";
 import ChatEntry from "./ChatEntry";
+import { ChatDto } from "../types/ChatDto";
 
-const ChatsList: React.FC = () => {
+type ChatEntryProps = {
+  chats: ChatDto[];
+  filter: string;
+  onChatClick: (chat: ChatDto) => void;
+}
+
+const ChatsList: React.FC<ChatEntryProps> = ({ chats, filter, onChatClick }) => {
   return (
     <div className="chats--list">
-      <ChatEntry
-        name="Alice Freemab"
-        message="How was your meeting?"
-        date="Aug 17, 2012"
-      />
-      <ChatEntry
-        name="Alice Freemab"
-        message="How was your meeting?"
-        date="Aug 17, 2012"
-      />
-      <ChatEntry
-        name="Alice Freemab"
-        message="How was your meeting?"
-        date="Aug 17, 2012"
-      />
-      <ChatEntry
-        name="Alice Freemab"
-        message="How was your meeting?"
-        date="Aug 17, 2012"
-      />
+      <h2 className="chats--h">Chats</h2>
+      
+      {
+        chats.filter((chat) => chat.responder.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase())).map((chat, index) => (
+          <ChatEntry
+            key={index}
+            onClick={() => onChatClick(chat)}
+            name={!chat.prefferedName || chat.prefferedName === '' ? chat.responder.name : chat.prefferedName}
+            message={chat.lastMessage?.text || "Start a conversation"}
+            date={chat.lastMessage?.createdAt || ""}
+          />
+        ))
+      }
     </div>
   );
 };

@@ -1,4 +1,3 @@
-import { on } from "events";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -37,7 +36,7 @@ const RegisterForm: React.FC<LoginFormProps> = ({ onLoginSuccess, onLoginError }
     localStorage.setItem('token', jsonData.token);
     localStorage.setItem('userId', jsonData.userId);
     localStorage.setItem('expireDate', jsonData.expireDate);
-    onLoginSuccess?.(jsonData.token);
+    onLoginSuccess?.(jsonData.token.token);
   };
 
   return (
