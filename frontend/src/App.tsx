@@ -406,7 +406,9 @@ const App: React.FC = () => {
         }}
       >
         <div>
-          <div className="delete-form-text">Are you sure you want to delete chat?</div>
+          <div className="delete-form-text">
+            Are you sure you want to delete chat?
+          </div>
           <div className="edged">
             <button className="button" onClick={handleChatDelete}>
               Yes

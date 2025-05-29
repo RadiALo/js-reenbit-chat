@@ -1,4 +1,4 @@
-import './Notification.css'
+import "./Notification.css";
 import React from "react";
 
 type NotificationProps = {
@@ -28,7 +28,9 @@ const Notification: React.FC<NotificationProps> = ({
       </div>
 
       <div>
-        <button className="notification--item--x" onClick={onClose}>✕</button>
+        <button className="notification--item--x" onClick={onClose}>
+          ✕
+        </button>
       </div>
     </div>
   );

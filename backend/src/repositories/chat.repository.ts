@@ -24,7 +24,7 @@ export class ChatRepository {
   async updatePrefferedName(chatId: string, prefferedName: string) {
     return await Chat.findByIdAndUpdate(
       chatId,
-      { $set: { prefferedName }},
+      { $set: { prefferedName } },
       { new: true }
     )
   }

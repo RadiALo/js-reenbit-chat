@@ -32,9 +32,9 @@ export class MessageController {
         res.status(404).json({ message: 'Chat not found' })
         return;
       }
-      
+
       if (userId !== chat.owner._id.toString()) {
-        res.status(403).json({ message: "Unauthorized"})
+        res.status(403).json({ message: "Unauthorized" })
         return;
       }
 

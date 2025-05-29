@@ -14,7 +14,7 @@ export class ResponderRouter {
   private initializeRoutes() {
     this.router.get("/", this.controller.getResponders.bind(this.controller));
     this.router.get("/:id", this.controller.getResponderById.bind(this.controller));
-    
+
     this.controller.fetchResponders().catch((error: Error | any) => {
       console.error("Error fetching responders:", error);
     });

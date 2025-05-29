@@ -1,4 +1,4 @@
-import './SendMessageBar.css'
+import "./SendMessageBar.css";
 import React, { useState, useRef, useEffect } from "react";
 
 interface SendMessageBarProps {
@@ -6,7 +6,10 @@ interface SendMessageBarProps {
   onSend: (message: string) => void;
 }
 
-const SendMessageBar: React.FC<SendMessageBarProps> = ({ disabled, onSend }) => {
+const SendMessageBar: React.FC<SendMessageBarProps> = ({
+  disabled,
+  onSend,
+}) => {
   const [message, setMessage] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -20,7 +23,10 @@ const SendMessageBar: React.FC<SendMessageBarProps> = ({ disabled, onSend }) => 
   const resizeTextarea = () => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = (textareaRef.current.scrollHeight > 200 ? 200 : textareaRef.current.scrollHeight) + "px";
+      textareaRef.current.style.height =
+        (textareaRef.current.scrollHeight > 200
+          ? 200
+          : textareaRef.current.scrollHeight) + "px";
     }
   };
   useEffect(() => {

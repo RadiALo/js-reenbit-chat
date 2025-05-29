@@ -1,4 +1,4 @@
-import './forms.css'
+import "./forms.css";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ChatDto } from "../types/ChatDto";
@@ -47,19 +47,25 @@ const EditChatForm: React.FC<EditChatFormProps> = ({
     }
 
     const newChat: ChatDto = await response.json();
-    onUpdateSuccess?.({...chat, prefferedName: newChat.prefferedName});
+    onUpdateSuccess?.({ ...chat, prefferedName: newChat.prefferedName });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="form-field">
         <label className="form-field--label">Chat:</label>
-        <input className="form-field--input" type="text" disabled value={chat.responder.name} />
+        <input
+          className="form-field--input"
+          type="text"
+          disabled
+          value={chat.responder.name}
+        />
       </div>
 
       <div className="form-field">
         <label className="form-field--label">Preffered Name:</label>
-        <input className="form-field--input"
+        <input
+          className="form-field--input"
           type="text"
           {...register("prefferedName", { value: chat.prefferedName })}
         />

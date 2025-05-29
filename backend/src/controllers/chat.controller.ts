@@ -15,7 +15,7 @@ export class ChatController {
       const ownerId = req.params.id;
 
       if (userId !== ownerId) {
-        res.status(403).json({ message: "Unauthorized"})
+        res.status(403).json({ message: "Unauthorized" })
         return;
       }
 
@@ -25,7 +25,7 @@ export class ChatController {
         res.status(404).json({ message: "No chats found for this user" });
         return;
       }
-      
+
 
       const chatDtos = chats.map((chat: any) => new ChatResponseDto(chat));
 
@@ -46,7 +46,7 @@ export class ChatController {
       const chat = await this.chatService.getChatById(chatId);
 
       if (userId !== chat?.owner._id.toString()) {
-        res.status(403).json({ message: "Unauthorized"})
+        res.status(403).json({ message: "Unauthorized" })
         return;
       }
 
@@ -66,12 +66,12 @@ export class ChatController {
     req: Request<unknown, unknown,
       ChatRequestDto>, res: Response
   ) {
-    try {      
+    try {
       const userId = req.token?.userId;
       const chatDto = new ChatRequestDto(req.body);
 
       if (userId !== chatDto.ownerId) {
-        res.status(403).json({ message: "Unauthorized"})
+        res.status(403).json({ message: "Unauthorized" })
         return;
       }
 
@@ -91,7 +91,7 @@ export class ChatController {
     try {
       const userId = req.token?.userId;
       const { chatId, prefferedName } = req.body;
-      
+
       if (!chatId || !prefferedName) {
         res.status(400).json({ message: 'chatId and prefferedName is required.' });
         return;
@@ -105,7 +105,7 @@ export class ChatController {
       }
 
       if (userId !== chat.owner._id.toString()) {
-        res.status(403).json({ message: "Unauthorized"})
+        res.status(403).json({ message: "Unauthorized" })
         return;
       }
 
@@ -140,7 +140,7 @@ export class ChatController {
       }
 
       if (userId !== chat.owner._id.toString()) {
-        res.status(403).json({ message: "Unauthorized"})
+        res.status(403).json({ message: "Unauthorized" })
         return;
       }
 

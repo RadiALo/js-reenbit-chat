@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, createContext, ReactNode } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  createContext,
+  ReactNode,
+} from "react";
 import Notification from "./Notification/Notification";
 
 interface NotificationItem {
@@ -15,18 +21,18 @@ const NotificationContext = createContext<NotificationContextType | null>(null);
 
 export const useNotification = () => {
   const context = useContext(NotificationContext);
-  if (!context) throw new Error("useNotification must be used within NotificationList");
+  if (!context)
+    throw new Error("useNotification must be used within NotificationList");
   return context;
 };
-
 
 const NotificationList: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
 
   const notify = (title: string, message: string) => {
     const id = Date.now();
-    setNotifications((prev) => [...prev, {id, title, message }]);
-  }
+    setNotifications((prev) => [...prev, { id, title, message }]);
+  };
 
   const removeNotification = (id: number) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
@@ -57,7 +63,7 @@ const NotificationList: React.FC<{ children: ReactNode }> = ({ children }) => {
         ))}
       </div>
     </NotificationContext.Provider>
-  )
-}
+  );
+};
 
 export default NotificationList;

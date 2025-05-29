@@ -10,7 +10,7 @@ const JWT_EXPIRATION_MS = 14 * 24 * 60 * 60 * 1000;
 
 export class UserService {
   private responderService = new ResponderService();
-  private chatService = new ChatService(); 
+  private chatService = new ChatService();
   private userRepository = new UserRepository();
 
   async getUsers() {
@@ -60,7 +60,7 @@ export class UserService {
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
-    
+
     if (!passwordMatch) {
       throw new Error("Invalid credentials");
     }
