@@ -1,7 +1,7 @@
 # 🗨️ Chat Application with Auto Response
 
 ## 🔗 Live Demo
-You can try the app [Qlive demo](https://js-reenbit-chat.onrender.com)!
+You can try the app [live demo](https://js-reenbit-chat.onrender.com)!
 
 ## 📌 Objective
 
