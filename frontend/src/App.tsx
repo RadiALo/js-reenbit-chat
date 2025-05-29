@@ -25,6 +25,7 @@ const App: React.FC = () => {
   const [id, setId] = useState<string>(localStorage.getItem("userId") || "");
 
   const [chats, setChats] = useState<ChatDto[]>([]);
+  const [search, setSearch] = useState<string>('')
   const [openedChat, setOpenedChat] = useState<ChatDto | null>(null);
 
   useEffect(() => {
@@ -130,7 +131,6 @@ const App: React.FC = () => {
 
   const appendMessageToOpenedChat = (
     message: MessageDto,
-    isUserMessage: boolean = true
   ) => {
     setOpenedChat((prevChat) => {
       if (!prevChat) return prevChat;
@@ -177,6 +177,8 @@ const App: React.FC = () => {
           <div className="profile--search">
             <input
               className="profile--search--input"
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
               type="text"
               placeholder="Search or start new chat"
             />
@@ -185,7 +187,7 @@ const App: React.FC = () => {
 
         <div className="chats">
           {token ? (
-            <ChatsList chats={chats} onChatClick={setOpenedChat} />
+            <ChatsList chats={chats} filter={search} onChatClick={setOpenedChat} />
           ) : (
             <div className="chats--not-logged-in">
               <h2>Welcome to Chat App</h2>
