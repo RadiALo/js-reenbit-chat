@@ -1,3 +1,4 @@
+import './Notification.css'
 import React from "react";
 
 type NotificationProps = {
