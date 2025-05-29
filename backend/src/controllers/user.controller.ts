@@ -7,17 +7,6 @@ import { validateOrReject } from "class-validator";
 export class UserController {
   private userService = new UserService();
 
-  async getUsers(_: Request, res: Response) {
-    try {
-      const users = await this.userService.getUsers();
-      const userDtos = users.map(user => new UserResponseDto(user));
-      res.status(200).json(userDtos);
-    } catch (error) {
-      res.status(500).json({ message: "Error fetching users", error });
-      console.error("Error fetching users:", error);
-    }
-  }
-
   async registerUser(
     req: Request<unknown, unknown, UserRegistrationRequestDto>,
     res: Response

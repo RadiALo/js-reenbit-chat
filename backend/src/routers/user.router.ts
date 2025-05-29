@@ -15,6 +15,5 @@ export class UserRouter {
     this.router.post('/register', this.controller.registerUser.bind(this.controller));
     this.router.post('/login', this.controller.loginUser.bind(this.controller));
     this.router.get('/me', authMiddleware, this.controller.getCurrentUser.bind(this.controller));
-    this.router.get('/', this.controller.getUsers.bind(this.controller));
   }
 }

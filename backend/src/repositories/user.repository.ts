@@ -1,10 +1,6 @@
 import { User } from '../models/user.model';
 
 export class UserRepository {
-  async findAll() {
-    return await User.find();
-  }
-
   async findById(id: string) {
     return await User.findOne({ _id: id });
   }

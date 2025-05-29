@@ -13,10 +13,6 @@ export class UserService {
   private chatService = new ChatService();
   private userRepository = new UserRepository();
 
-  async getUsers() {
-    return await this.userRepository.findAll();
-  }
-
   async getUserById(userId: string) {
     return await this.userRepository.findById(userId);
   }
