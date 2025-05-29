@@ -4,6 +4,7 @@ import { IResponder } from './responder.model';
 export interface IChat extends Document {
   owner: Types.ObjectId;
   responder: Types.ObjectId | IResponder;
+  prefferedName: string;
   messages: Types.ObjectId[];
   lastMessage: Types.ObjectId;
 }
@@ -19,6 +20,10 @@ const chatSchema = new Schema<IChat>({
     type: Schema.Types.ObjectId,
     ref: 'Responder',
     required: true
+  },
+
+  prefferedName: {
+    type: Schema.Types.String,
   },
 
   messages: [{

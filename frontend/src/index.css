@@ -65,6 +65,7 @@
 }
 
 .chats {
+  position: relative;
   grid-area: 3 / 1 / 6 / 3;
   background-color: var(--chats-background-color);
   outline: 1px solid var(--border-color);
@@ -79,6 +80,12 @@
 .chats--list {
   display: flex;
   flex-direction: column;
+}
+
+.chats--add-button {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
 }
 
 .chats--not-logged-in {

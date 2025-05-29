@@ -18,8 +18,10 @@ const App: React.FC = () => {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
-  const [loginDialogOpen, setLoginDialogOpen] = React.useState(false);
-  const [registerDialogOpen, setRegisterDialogOpen] = React.useState(false);
+
+  const [loginDialogOpen, setLoginDialogOpen] = React.useState<boolean>(false);
+  const [registerDialogOpen, setRegisterDialogOpen] = React.useState<boolean>(false);
+  const [createChatDialogOpen, setCreateChatDialogOpen] = React.useState<boolean>(false);
 
   const [name, setName] = useState<string>("");
   const [id, setId] = useState<string>(localStorage.getItem("userId") || "");
@@ -187,8 +189,19 @@ const App: React.FC = () => {
 
         <div className="chats">
           {token ? (
-            <ChatsList chats={chats} filter={search} onChatClick={setOpenedChat} />
-          ) : (
+            <>
+              <ChatsList chats={chats} filter={search} onChatClick={setOpenedChat} />
+              
+              <div className="chats--add-button">
+                <button
+                  className="button"
+                  onClick={() => {setCreateChatDialogOpen(true)}}
+                >
+                  +
+                </button>
+              </div>
+            </>
+            ) : (
             <div className="chats--not-logged-in">
               <h2>Welcome to Chat App</h2>
               <p>
@@ -268,6 +281,18 @@ const App: React.FC = () => {
             Login
           </button>
           .
+        </div>
+      </Dialog>
+
+      <Dialog
+        title="Create Chat"
+        isOpen={createChatDialogOpen}
+        onClose={() => {
+          setCreateChatDialogOpen(false);
+        }}
+      >
+        <div>
+
         </div>
       </Dialog>
     </>

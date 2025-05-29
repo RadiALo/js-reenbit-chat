@@ -10,12 +10,11 @@ export class ChatRepository {
   }
 
   async findById(id: string) {
-    const chat = await Chat.findOne({ _id: id })
+    return await Chat.findOne({ _id: id })
       .populate('responder')
       .populate('owner')
       .populate('lastMessage')
-      .populate('messages');
-    return chat;
+      .populate('messages');;
   };
 
   async update(id: string, data: any) {

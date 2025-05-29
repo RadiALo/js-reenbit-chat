@@ -12,7 +12,7 @@ const ChatsList: React.FC<ChatEntryProps> = ({ chats, filter, onChatClick }) => 
   return (
     <div className="chats--list">
       <h2 className="chats--h">Chats</h2>
-
+      
       {
         chats.filter((chat) => chat.responder.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase())).map((chat, index) => (
           <ChatEntry
