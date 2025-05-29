@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 interface SendMessageBarProps {
   onSend: (message: string) => void;
-};
+}
 
 const SendMessageBar: React.FC<SendMessageBarProps> = ({ onSend }) => {
-  const [message, setMessage] = React.useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSend = () => {
     if (message.trim() !== "") {
       onSend(message);
-      setMessage(""); // Clear the input after sending
+      setMessage("");
     }
   };
+
+  const resizeTextarea = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = (textareaRef.current.scrollHeight > 200 ? 200 : textareaRef.current.scrollHeight) + "px";
+    }
+  };
+  useEffect(() => {
+    resizeTextarea();
+  }, [message]);
 
   return (
     <div className="chat-messages--bar">
       <textarea
+        ref={textareaRef}
         className="chat-messages--bar--input"
         rows={1}
         value={message}
@@ -28,6 +40,7 @@ const SendMessageBar: React.FC<SendMessageBarProps> = ({ onSend }) => {
           }
         }}
         placeholder="Type your message"
+        style={{ resize: "none" }}
       />
       <button
         type="button"

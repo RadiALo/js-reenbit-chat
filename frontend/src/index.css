@@ -204,7 +204,7 @@
 }
 
 .chat-messages--bar {
-  height: 64px;
+  max-height: 256px;
   padding: 6px 16px;
   display: flex;
   align-items: center;

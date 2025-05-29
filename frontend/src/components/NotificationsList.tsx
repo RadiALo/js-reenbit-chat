@@ -5,11 +5,10 @@ interface NotificationItem {
   id: number;
   title: string;
   message: string;
-  imageUrl?: string;
 }
 
 interface NotificationContextType {
-  notify: (title: string, message: string, imageUrl?: string) => void;
+  notify: (title: string, message: string) => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | null>(null);
@@ -24,9 +23,9 @@ export const useNotification = () => {
 const NotificationList: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
 
-  const notify = (title: string, message: string, imageUrl?: string) => {
+  const notify = (title: string, message: string) => {
     const id = Date.now();
-    setNotifications((prev) => [...prev, {id, title, message, imageUrl }]);
+    setNotifications((prev) => [...prev, {id, title, message }]);
   }
 
   const removeNotification = (id: number) => {
@@ -53,7 +52,6 @@ const NotificationList: React.FC<{ children: ReactNode }> = ({ children }) => {
             key={notification.id}
             title={notification.title}
             message={notification.message}
-            imageUrl={notification.imageUrl}
             onClose={() => removeNotification(notification.id)}
           />
         ))}

@@ -22,16 +22,20 @@ const App: React.FC = () => {
   );
 
   const [loginDialogOpen, setLoginDialogOpen] = React.useState<boolean>(false);
-  const [registerDialogOpen, setRegisterDialogOpen] = React.useState<boolean>(false);
-  const [createChatDialogOpen, setCreateChatDialogOpen] = React.useState<boolean>(false);
-  const [editChatDialogOpen, setEditChatDialogOpen] = React.useState<boolean>(false);
-  const [deleteChatDialogOpen, setDeleteChatDialogOpen] = React.useState<boolean>(false);
+  const [registerDialogOpen, setRegisterDialogOpen] =
+    React.useState<boolean>(false);
+  const [createChatDialogOpen, setCreateChatDialogOpen] =
+    React.useState<boolean>(false);
+  const [editChatDialogOpen, setEditChatDialogOpen] =
+    React.useState<boolean>(false);
+  const [deleteChatDialogOpen, setDeleteChatDialogOpen] =
+    React.useState<boolean>(false);
 
   const [name, setName] = useState<string>("");
   const [id, setId] = useState<string>(localStorage.getItem("userId") || "");
 
   const [chats, setChats] = useState<ChatDto[]>([]);
-  const [search, setSearch] = useState<string>('')
+  const [search, setSearch] = useState<string>("");
   const [openedChat, setOpenedChat] = useState<ChatDto | null>(null);
 
   const updateChat = (updatedChat: ChatDto) => {
@@ -43,7 +47,7 @@ const App: React.FC = () => {
         return chat;
       })
     );
-  }
+  };
 
   const handleChatDelete = async () => {
     setDeleteChatDialogOpen(false);
@@ -55,18 +59,20 @@ const App: React.FC = () => {
     const response = await fetch(`${apiUrl}/chats/${openedChat._id}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
-     if (!response.ok) {
+    if (!response.ok) {
       console.error("Failed to delete chat");
       return;
     }
 
-    setChats(prevChats => prevChats.filter(chat => chat._id !== openedChat._id));
+    setChats((prevChats) =>
+      prevChats.filter((chat) => chat._id !== openedChat._id)
+    );
     setOpenedChat(null);
-  }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -106,7 +112,8 @@ const App: React.FC = () => {
     socket.emit("register", id);
 
     const handleMessage = ({ message, chatId }: any) => {
-      const chat: ChatDto | null = chats.find((chat) => chat._id === chatId) || null;
+      const chat: ChatDto | null =
+        chats.find((chat) => chat._id === chatId) || null;
 
       if (!chat) {
         return;
@@ -120,7 +127,7 @@ const App: React.FC = () => {
 
       chat.messages.push(message);
       chat.lastMessage = message;
-      updateChat(chat)
+      updateChat(chat);
     };
 
     socket.on("message", handleMessage);
@@ -176,9 +183,7 @@ const App: React.FC = () => {
     }
   }, [id, token, apiUrl]);
 
-  const appendMessageToOpenedChat = (
-    message: MessageDto,
-  ) => {
+  const appendMessageToOpenedChat = (message: MessageDto) => {
     setOpenedChat((prevChat) => {
       if (!prevChat) return prevChat;
 
@@ -188,8 +193,8 @@ const App: React.FC = () => {
       };
     });
 
-    
-    const chat: ChatDto | null = chats.find((chat) => chat._id === openedChat?._id) || null;
+    const chat: ChatDto | null =
+      chats.find((chat) => chat._id === openedChat?._id) || null;
 
     if (!chat) {
       return;
@@ -245,18 +250,24 @@ const App: React.FC = () => {
         <div className="chats">
           {token ? (
             <>
-              <ChatsList chats={chats} filter={search} onChatClick={setOpenedChat} />
-              
+              <ChatsList
+                chats={chats}
+                filter={search}
+                onChatClick={setOpenedChat}
+              />
+
               <div className="chats--add-button-div">
                 <button
                   className="chats--add-button"
-                  onClick={() => {setCreateChatDialogOpen(true)}}
+                  onClick={() => {
+                    setCreateChatDialogOpen(true);
+                  }}
                 >
                   +
                 </button>
               </div>
             </>
-            ) : (
+          ) : (
             <div className="chats--not-logged-in">
               <h2>Welcome to Chat App</h2>
               <p>
@@ -276,19 +287,19 @@ const App: React.FC = () => {
           )}
         </div>
 
-        {<Chat
-          chat={openedChat}
-          onSendMessage={appendMessageToOpenedChat}
-          onEditRequest={() => {
-            setEditChatDialogOpen(true)
-          }}
-          onDeleteRequest={() => {
-            setDeleteChatDialogOpen(true)
-          }}
-        />}
+        {
+          <Chat
+            chat={openedChat}
+            onSendMessage={appendMessageToOpenedChat}
+            onEditRequest={() => {
+              setEditChatDialogOpen(true);
+            }}
+            onDeleteRequest={() => {
+              setDeleteChatDialogOpen(true);
+            }}
+          />
+        }
       </div>
-
-      
 
       <Dialog
         title="Log In"
@@ -372,17 +383,19 @@ const App: React.FC = () => {
           setEditChatDialogOpen(false);
         }}
       >
-        {openedChat && <EditChatForm
-        chat={openedChat}
-        onClose={() => {
-          setEditChatDialogOpen(false);
-        }}
-        onUpdateSuccess={(chat) => {
-          setOpenedChat(chat);
-          updateChat(chat);
-          setEditChatDialogOpen(false);
-        }}
-      />}
+        {openedChat && (
+          <EditChatForm
+            chat={openedChat}
+            onClose={() => {
+              setEditChatDialogOpen(false);
+            }}
+            onUpdateSuccess={(chat) => {
+              setOpenedChat(chat);
+              updateChat(chat);
+              setEditChatDialogOpen(false);
+            }}
+          />
+        )}
       </Dialog>
 
       <Dialog
@@ -395,17 +408,14 @@ const App: React.FC = () => {
         <div>
           <div>Are you sure you want to delete chat?</div>
           <div>
-            <button
-              className='button'
-              onClick={handleChatDelete}
-            >
+            <button className="button" onClick={handleChatDelete}>
               Yes
             </button>
-            
+
             <button
-              className='button'
+              className="button"
               onClick={() => {
-                setDeleteChatDialogOpen(false)
+                setDeleteChatDialogOpen(false);
               }}
             >
               No

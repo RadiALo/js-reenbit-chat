@@ -1,16 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 type NotificationProps = {
   title: string;
   message: string;
-  imageUrl?: string;
   onClose: () => void;
 };
 
 const Notification: React.FC<NotificationProps> = ({
   title,
   message,
-  imageUrl,
   onClose,
 }) => {
   return (
@@ -18,7 +16,7 @@ const Notification: React.FC<NotificationProps> = ({
       <div>
         <img
           className="user-icon"
-          src={imageUrl || "/user-icon.png"}
+          src="/user-icon.png"
           alt="Notification icon"
         />
       </div>
