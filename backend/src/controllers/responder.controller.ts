@@ -27,7 +27,8 @@ export class ResponderController {
       const responder = await this.responderService.getResponderById(responderId);
 
       if (!responder) {
-        return res.status(404).json({ message: "Responder not found" });
+        res.status(404).json({ message: "Responder not found" })
+        return;
       }
 
       res.status(200).json(new ResponderResponseDto(responder));

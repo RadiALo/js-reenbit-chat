@@ -23,7 +23,21 @@ export class MessageController {
     res: Response
   ) {
     try {
+      const userId = req.token?.userId;
       const dto = new MessageRequestDto(req.body);
+
+      const chat = await this.chatService.getChatById(dto.chatId);
+
+      if (!chat) {
+        res.status(404).json({ message: 'Chat not found' })
+        return;
+      }
+      
+      if (userId !== chat.owner._id.toString()) {
+        res.status(403).json({ message: "Unauthorized"})
+        return;
+      }
+
       const message = await this.messageService.sendUserMessage(dto.chatId, dto.userId, dto.text);
 
       setTimeout(async () => {

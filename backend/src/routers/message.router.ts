@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { MessageController } from "../controllers/message.controller";
 import { SocketService } from "../services/socket.service";
+import authMiddleware from "../middleware/authMiddleware";
 
 export class MessageRouter {
   public router: Router;
@@ -13,6 +14,6 @@ export class MessageRouter {
   }
 
   private initializeRoutes() {
-    this.router.post('/send', this.controller.sendUserMessage.bind(this.controller));
+    this.router.post('/send', authMiddleware, this.controller.sendUserMessage.bind(this.controller));
   }
 }
