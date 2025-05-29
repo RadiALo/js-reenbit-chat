@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 
 interface SendMessageBarProps {
+  disabled: boolean;
   onSend: (message: string) => void;
 }
 
-const SendMessageBar: React.FC<SendMessageBarProps> = ({ onSend }) => {
+const SendMessageBar: React.FC<SendMessageBarProps> = ({ disabled, onSend }) => {
   const [message, setMessage] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -30,6 +31,7 @@ const SendMessageBar: React.FC<SendMessageBarProps> = ({ onSend }) => {
       <textarea
         ref={textareaRef}
         className="chat-messages--bar--input"
+        disabled={disabled}
         rows={1}
         value={message}
         onChange={(e) => setMessage(e.target.value)}

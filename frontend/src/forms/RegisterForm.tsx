@@ -43,9 +43,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, onRegist
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Email:</label>
+      <div className="form-field">
+        <label className="form-field--label">Email:</label>
         <input
+          className="form-field--input"
           {
             ...register('email', {
               required: "Email is required",
@@ -57,9 +58,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, onRegist
         {errors.email && <p>{errors.email.message}</p>}
       </div>
 
-      <div>
-        <label>Password:</label>
+      <div className="form-field">
+        <label className="form-field--label">Password:</label>
         <input
+          className="form-field--input"
           {
             ...register('password', {
               required: 'Password is required',
@@ -70,9 +72,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, onRegist
         {errors.password && <p>{errors.password.message}</p>}
       </div>
 
-      <div>
-        <label>Name:</label>
+      <div className="form-field">
+        <label className="form-field--label">Name:</label>
         <input
+          className="form-field--input"
           {
             ...register('name', {
               required: 'Name is required'
@@ -82,7 +85,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegisterSuccess, onRegist
         {errors.name && <p>{errors.name.message}</p>}
       </div>
       
-      <button className="button" type="submit">Register</button>
+      <div className="centered">
+        <button className="button" type="submit">Register</button>
+      </div>
     </form>
   )
 };

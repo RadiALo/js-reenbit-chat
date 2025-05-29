@@ -56,10 +56,10 @@ const CreateChatForm: React.FC<CreateChatProps> = ({ userId, onCreateSuccess, on
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Select Responder:</label>
+      <div className="form-field">
+        <label className="form-field--label">Select Responder:</label>
 
-        <select {...register("responderId", { required: true })}>
+        <select className="form-field--input" {...register("responderId", { required: true })}>
           <option value="">-- Select a responder --</option>
           {responders.map((responder) => (
             <option key={responder._id} value={responder._id}>
@@ -71,9 +71,10 @@ const CreateChatForm: React.FC<CreateChatProps> = ({ userId, onCreateSuccess, on
         {errors.responderId && <p>This field is required</p>}
       </div>
 
-      <div>
-        <label>Preferred Name:</label>
+      <div className="form-field">
+        <label className="form-field--label">Preferred Name:</label>
         <input
+          className="form-field--input"
           {...register("prefferedName")}
           type="text"
         />

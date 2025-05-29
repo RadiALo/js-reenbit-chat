@@ -51,20 +51,20 @@ const EditChatForm: React.FC<EditChatFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Chat:</label>
-        <input type="text" disabled value={chat.responder.name} />
+      <div className="form-field">
+        <label className="form-field--label">Chat:</label>
+        <input className="form-field--input" type="text" disabled value={chat.responder.name} />
       </div>
 
-      <div>
-        <label>Preffered Name:</label>
-        <input
+      <div className="form-field">
+        <label className="form-field--label">Preffered Name:</label>
+        <input className="form-field--input"
           type="text"
           {...register("prefferedName", { value: chat.prefferedName })}
         />
       </div>
 
-      <div>
+      <div className="edged">
         <button className="button" type="submit">
           Save
         </button>

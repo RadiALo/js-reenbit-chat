@@ -315,7 +315,7 @@ const App: React.FC = () => {
           }}
         />
 
-        <div>
+        <div className="form-under-text">
           Don't have an account?{" "}
           <button
             className="link"
@@ -344,7 +344,7 @@ const App: React.FC = () => {
           }}
         />
 
-        <div>
+        <div className="form-under-text">
           Have an account?{" "}
           <button
             className="link"
@@ -406,8 +406,8 @@ const App: React.FC = () => {
         }}
       >
         <div>
-          <div>Are you sure you want to delete chat?</div>
-          <div>
+          <div className="delete-form-text">Are you sure you want to delete chat?</div>
+          <div className="edged">
             <button className="button" onClick={handleChatDelete}>
               Yes
             </button>
