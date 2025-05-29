@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { ChatService } from "../services/chat.service";
 import { ChatResponseDto } from "../dtos/response/chat.response.dto";
 import { ChatRequestDto } from "../dtos/request/chat.request.dto";
@@ -5,14 +6,26 @@ import { ChatRequestDto } from "../dtos/request/chat.request.dto";
 export class ChatController {
   private chatService = new ChatService();
 
-  async getChatsByUserId(req: any, res: any) {
+  async getChatsByUserId(
+    req: Request<{ id: string }>,
+    res: Response
+  ) {
     try {
+      const userId = req.token?.userId;
       const ownerId = req.params.id;
+
+      if (userId !== ownerId) {
+        res.status(403).json({ message: "Unauthorized" })
+        return;
+      }
+
       const chats = await this.chatService.getChatsByOwnerId(ownerId);
 
       if (!chats) {
-        return res.status(404).json({ message: "No chats found for this user" });
+        res.status(404).json({ message: "No chats found for this user" });
+        return;
       }
+
 
       const chatDtos = chats.map((chat: any) => new ChatResponseDto(chat));
 
@@ -23,13 +36,23 @@ export class ChatController {
     }
   }
 
-  async getChatById(req: any, res: any) {
+  async getChatById(
+    req: Request<{ id: string }>,
+    res: Response
+  ) {
     try {
+      const userId = req.token?.userId;
       const chatId = req.params.id;
       const chat = await this.chatService.getChatById(chatId);
 
+      if (userId !== chat?.owner._id.toString()) {
+        res.status(403).json({ message: "Unauthorized" })
+        return;
+      }
+
       if (!chat) {
-        return res.status(404).json({ message: "Chat not found" });
+        res.status(404).json({ message: "Chat not found" });
+        return;
       }
       console.log(chat)
       res.status(200).json(new ChatResponseDto(chat));
@@ -39,9 +62,19 @@ export class ChatController {
     }
   }
 
-  async createChat(req: any, res: any) {
+  async createChat(
+    req: Request<unknown, unknown,
+      ChatRequestDto>, res: Response
+  ) {
     try {
+      const userId = req.token?.userId;
       const chatDto = new ChatRequestDto(req.body);
+
+      if (userId !== chatDto.ownerId) {
+        res.status(403).json({ message: "Unauthorized" })
+        return;
+      }
+
       const newChat = await this.chatService.createChat(chatDto);
 
       res.status(201).json(new ChatResponseDto(newChat));
@@ -51,18 +84,36 @@ export class ChatController {
     }
   }
 
-  async updatePrefferedName(req: any, res: any) {
+  async updatePrefferedName(
+    req: Request<unknown, unknown, { chatId: string, prefferedName: string }>,
+    res: Response
+  ) {
     try {
+      const userId = req.token?.userId;
       const { chatId, prefferedName } = req.body;
 
       if (!chatId || !prefferedName) {
-        return res.status(400).json({ message: 'chatId and prefferedName is required.' });
+        res.status(400).json({ message: 'chatId and prefferedName is required.' });
+        return;
+      }
+
+      const chat = await this.chatService.getChatById(chatId);
+
+      if (!chat) {
+        res.status(404).json({ message: 'Chat not found' })
+        return;
+      }
+
+      if (userId !== chat.owner._id.toString()) {
+        res.status(403).json({ message: "Unauthorized" })
+        return;
       }
 
       const newChat = await this.chatService.updatePrefferedName(chatId, prefferedName);
 
       if (!newChat) {
-        return res.status(404).json({ message: 'Chat not found' });
+        res.status(404).json({ message: 'Chat not found' })
+        return;
       }
 
       res.status(200).json(new ChatResponseDto(newChat));
@@ -72,12 +123,25 @@ export class ChatController {
     }
   }
 
-  async deleteChat(req: any, res: any) {
+  async deleteChat(req: Request<{ id: string }>, res: Response) {
     try {
+      const userId = req.token?.userId;
       const chatId = req.params.id;
 
       if (!chatId) {
         res.status(400).json({ message: 'chatId is required' })
+      }
+
+      const chat = await this.chatService.getChatById(chatId);
+
+      if (!chat) {
+        res.status(404).json({ message: 'Chat not found' })
+        return;
+      }
+
+      if (userId !== chat.owner._id.toString()) {
+        res.status(403).json({ message: "Unauthorized" })
+        return;
       }
 
       this.chatService.deleteChat(chatId);

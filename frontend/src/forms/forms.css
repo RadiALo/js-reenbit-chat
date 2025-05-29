@@ -1,0 +1,40 @@
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.form-field--label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: var(--light-text-color);
+}
+
+.form-field--input{
+  padding: 8px 12px;
+  font-size: 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+}
+
+.edged {
+  display: flex;
+  justify-content: space-around;
+}
+
+.delete-form-text {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.form-under-text {
+  margin-top: 16px;
+  text-align: center;
+}

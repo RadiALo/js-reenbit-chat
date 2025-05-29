@@ -1,3 +1,4 @@
+import "./forms.css";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ChatDto } from "../types/ChatDto";
@@ -11,12 +12,22 @@ type CreateChatProps = {
   userId: string;
   onCreateSuccess?: (chat: ChatDto) => void;
   onCreateError?: (error: string) => void;
-}
+};
 
-const CreateChatForm: React.FC<CreateChatProps> = ({ userId, onCreateSuccess, onCreateError }) => {
+const CreateChatForm: React.FC<CreateChatProps> = ({
+  userId,
+  onCreateSuccess,
+  onCreateError,
+}) => {
   const apiUrl = process.env.REACT_APP_API_URL;
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-  const [ responders, setResponders ] = useState<{name: string, _id: string}[]>([]);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
+  const [responders, setResponders] = useState<{ name: string; _id: string }[]>(
+    []
+  );
   useEffect(() => {
     const fetchResponders = async () => {
       const response = await fetch(`${apiUrl}/responders`);
@@ -27,18 +38,20 @@ const CreateChatForm: React.FC<CreateChatProps> = ({ userId, onCreateSuccess, on
 
       const respondersJson = await response.json();
       setResponders(respondersJson);
-    }
+    };
 
     fetchResponders();
-  })
+  });
 
   const onSubmit = async (data: FormData) => {
+    const token = localStorage.getItem("token");
     const response = await fetch(`${apiUrl}/chats`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ ...data, ownerId: userId })
+      body: JSON.stringify({ ...data, ownerId: userId }),
     });
 
     if (!response.ok) {
@@ -54,10 +67,13 @@ const CreateChatForm: React.FC<CreateChatProps> = ({ userId, onCreateSuccess, on
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Select Responder:</label>
+      <div className="form-field">
+        <label className="form-field--label">Select Responder:</label>
 
-        <select {...register("responderId", { required: true })}>
+        <select
+          className="form-field--input"
+          {...register("responderId", { required: true })}
+        >
           <option value="">-- Select a responder --</option>
           {responders.map((responder) => (
             <option key={responder._id} value={responder._id}>
@@ -69,17 +85,20 @@ const CreateChatForm: React.FC<CreateChatProps> = ({ userId, onCreateSuccess, on
         {errors.responderId && <p>This field is required</p>}
       </div>
 
-      <div>
-        <label>Preferred Name:</label>
+      <div className="form-field">
+        <label className="form-field--label">Preferred Name:</label>
         <input
+          className="form-field--input"
           {...register("prefferedName")}
           type="text"
         />
       </div>
 
-      <button className="button" type="submit">Create</button>
+      <button className="button" type="submit">
+        Create
+      </button>
     </form>
-  )
-}
+  );
+};
 
 export default CreateChatForm;

@@ -1,6 +1,7 @@
+import './ChatsList.css'
 import React from "react";
-import ChatEntry from "./ChatEntry";
-import { ChatDto } from "../types/ChatDto";
+import ChatEntry from "../ChatEntry/ChatEntry";
+import { ChatDto } from "../../types/ChatDto";
 
 type ChatEntryProps = {
   chats: ChatDto[];

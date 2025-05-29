@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { ChatController } from "../controllers/chat.controller";
+import authMiddleware from "../middleware/authMiddleware";
 
 export class ChatRouter {
   public router: Router;
@@ -11,10 +12,10 @@ export class ChatRouter {
   }
 
   private initializeRoutes() {
-    this.router.get('/user/:id', this.controller.getChatsByUserId.bind(this.controller));
-    this.router.get('/:id', this.controller.getChatById.bind(this.controller));
-    this.router.post('/', this.controller.createChat.bind(this.controller));
-    this.router.patch('/preffered', this.controller.updatePrefferedName.bind(this.controller));
-    this.router.delete('/:id', this.controller.deleteChat.bind(this.controller));
+    this.router.get('/user/:id', authMiddleware, this.controller.getChatsByUserId.bind(this.controller));
+    this.router.get('/:id', authMiddleware, this.controller.getChatById.bind(this.controller));
+    this.router.post('/', authMiddleware, this.controller.createChat.bind(this.controller));
+    this.router.patch('/preffered', authMiddleware, this.controller.updatePrefferedName.bind(this.controller));
+    this.router.delete('/:id', authMiddleware, this.controller.deleteChat.bind(this.controller));
   }
 }

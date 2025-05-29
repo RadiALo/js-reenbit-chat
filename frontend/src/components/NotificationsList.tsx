@@ -1,33 +1,38 @@
-import React, { useState, useEffect, useContext, createContext, ReactNode } from "react";
-import Notification from "./Notification";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  createContext,
+  ReactNode,
+} from "react";
+import Notification from "./Notification/Notification";
 
 interface NotificationItem {
   id: number;
   title: string;
   message: string;
-  imageUrl?: string;
 }
 
 interface NotificationContextType {
-  notify: (title: string, message: string, imageUrl?: string) => void;
+  notify: (title: string, message: string) => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | null>(null);
 
 export const useNotification = () => {
   const context = useContext(NotificationContext);
-  if (!context) throw new Error("useNotification must be used within NotificationList");
+  if (!context)
+    throw new Error("useNotification must be used within NotificationList");
   return context;
 };
-
 
 const NotificationList: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
 
-  const notify = (title: string, message: string, imageUrl?: string) => {
+  const notify = (title: string, message: string) => {
     const id = Date.now();
-    setNotifications((prev) => [...prev, {id, title, message, imageUrl }]);
-  }
+    setNotifications((prev) => [...prev, { id, title, message }]);
+  };
 
   const removeNotification = (id: number) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
@@ -53,13 +58,12 @@ const NotificationList: React.FC<{ children: ReactNode }> = ({ children }) => {
             key={notification.id}
             title={notification.title}
             message={notification.message}
-            imageUrl={notification.imageUrl}
             onClose={() => removeNotification(notification.id)}
           />
         ))}
       </div>
     </NotificationContext.Provider>
-  )
-}
+  );
+};
 
 export default NotificationList;

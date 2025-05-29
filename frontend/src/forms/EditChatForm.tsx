@@ -1,3 +1,4 @@
+import "./forms.css";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ChatDto } from "../types/ChatDto";
@@ -28,10 +29,12 @@ const EditChatForm: React.FC<EditChatFormProps> = ({
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
+    const token = localStorage.getItem("token");
     const response = await fetch(`${apiUrl}/chats/preffered`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ ...data, chatId: chat._id }),
     });
@@ -44,25 +47,31 @@ const EditChatForm: React.FC<EditChatFormProps> = ({
     }
 
     const newChat: ChatDto = await response.json();
-    onUpdateSuccess?.({...chat, prefferedName: newChat.prefferedName});
+    onUpdateSuccess?.({ ...chat, prefferedName: newChat.prefferedName });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Chat:</label>
-        <input type="text" disabled value={chat.responder.name} />
+      <div className="form-field">
+        <label className="form-field--label">Chat:</label>
+        <input
+          className="form-field--input"
+          type="text"
+          disabled
+          value={chat.responder.name}
+        />
       </div>
 
-      <div>
-        <label>Preffered Name:</label>
+      <div className="form-field">
+        <label className="form-field--label">Preffered Name:</label>
         <input
+          className="form-field--input"
           type="text"
           {...register("prefferedName", { value: chat.prefferedName })}
         />
       </div>
 
-      <div>
+      <div className="edged">
         <button className="button" type="submit">
           Save
         </button>

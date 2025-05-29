@@ -1,8 +1,9 @@
+import './Chat.css';
 import React from "react";
-import ChatMessage from "./ChatMessage";
-import { ChatDto } from "../types/ChatDto";
-import SendMessageBar from "./SendMessageBar";
-import { MessageDto } from "../types/MessageDto";
+import ChatMessage from "../ChatMessage/ChatMessage";
+import { ChatDto } from "../../types/ChatDto";
+import SendMessageBar from "../SendMessageBar/SendMessageBar";
+import { MessageDto } from "../../types/MessageDto";
 
 type ChatProps = {
   chat: ChatDto | null;
@@ -55,12 +56,12 @@ const Chat: React.FC<ChatProps> = ({ chat, onSendMessage, onEditRequest, onDelet
       <div className="chat-header">
         <img className="user-icon" src="/user-icon.png" alt="User icon" />
 
-        <div className="chat-header--name">{chat && (chat.prefferedName || chat.responder.name)}</div>
+        <div className="chat-header--name">{(chat && (chat.prefferedName || chat.responder.name)) || 'Choose chat to start conversation'}</div>
 
-        <div>
+        {chat && <div>
           <button onClick={onEditRequest} className="button">Edit</button>
           <button onClick={onDeleteRequest} className="button">Delete</button>
-        </div>
+        </div>}
       </div>
 
       <div className="chat-messages">
@@ -80,7 +81,7 @@ const Chat: React.FC<ChatProps> = ({ chat, onSendMessage, onEditRequest, onDelet
           )}
         </div>
 
-        <SendMessageBar onSend={handleSendMessage}/>
+        <SendMessageBar disabled={chat ? false : true} onSend={handleSendMessage}/>
       </div>
     </>
   );

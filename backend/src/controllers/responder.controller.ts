@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { ResponderService } from "../services/responder.service";
 import { ResponderResponseDto } from "../dtos/response/responder.response.dto";
 import { ResponderFetchDto } from "../dtos/fetch/responder.fetch.dto";
@@ -5,7 +6,7 @@ import { ResponderFetchDto } from "../dtos/fetch/responder.fetch.dto";
 export class ResponderController {
   private responderService = new ResponderService();
 
-  async getResponders(_: any, res: any) {
+  async getResponders(_: Request, res: Response) {
     try {
       const responders = await this.responderService.getResponders();
       const respondersDtos = responders.map(responder => new ResponderResponseDto(responder));
@@ -17,13 +18,17 @@ export class ResponderController {
     }
   }
 
-  async getResponderById(req: any, res: any) {
+  async getResponderById(
+    req: Request<{ id: string }>,
+    res: Response
+  ) {
     try {
       const responderId = req.params.id;
       const responder = await this.responderService.getResponderById(responderId);
 
       if (!responder) {
-        return res.status(404).json({ message: "Responder not found" });
+        res.status(404).json({ message: "Responder not found" })
+        return;
       }
 
       res.status(200).json(new ResponderResponseDto(responder));

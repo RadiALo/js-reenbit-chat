@@ -10,7 +10,7 @@ export class UserRepository {
   }
 
   async findByEmail(email: string) {
-    return await User.findOne({ email});
+    return await User.findOne({ email });
   }
 
   async create(data: any) {
